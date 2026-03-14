@@ -30,10 +30,7 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  html {
-    background: var(--bg);
-    min-height: 100%;
-  }
+  html { background: var(--bg); min-height: 100%; }
 
   body {
     font-family: 'Crimson Pro', 'Noto Serif SC', 'STSong', Georgia, serif;
@@ -42,12 +39,10 @@
     padding-bottom: 60px;
   }
 
-  /* ── Texture overlay ── */
   body::before {
     content: '';
     position: fixed; inset: 0; z-index: 0;
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
     pointer-events: none;
   }
 
@@ -55,117 +50,77 @@
   header {
     position: relative; z-index: 1;
     padding: 52px 32px 40px;
-    max-width: 760px; margin: 0 auto;
+    max-width: 800px; margin: 0 auto;
     border-bottom: 1px solid var(--border-dark);
   }
-
   .header-label {
     font-size: 10px; letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--accent-light);
+    text-transform: uppercase; color: var(--accent-light);
     margin-bottom: 12px;
   }
-
   header h1 {
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: 42px; font-weight: 300;
-    line-height: 1.15;
-    color: var(--text);
-    margin-bottom: 10px;
+    line-height: 1.15; color: var(--text); margin-bottom: 10px;
   }
-
-  header h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .header-sub {
-    font-size: 15px; color: var(--text-light);
-    font-style: italic;
-    line-height: 1.6;
-  }
+  header h1 em { font-style: italic; color: var(--accent); }
+  .header-sub { font-size: 15px; color: var(--text-light); font-style: italic; line-height: 1.6; }
 
   /* ── Stats bar ── */
   .stats-bar {
     position: relative; z-index: 1;
-    max-width: 760px; margin: 0 auto;
+    max-width: 800px; margin: 0 auto;
     padding: 20px 32px;
     display: flex; gap: 32px;
     border-bottom: 1px solid var(--border);
   }
-  .stat {
-    display: flex; flex-direction: column; gap: 2px;
-  }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
   .stat-num {
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: 28px; font-weight: 600;
-    color: var(--accent);
-    line-height: 1;
+    color: var(--accent); line-height: 1;
   }
-  .stat-label {
-    font-size: 11px; color: var(--text-light);
-    letter-spacing: 0.06em;
-  }
+  .stat-label { font-size: 11px; color: var(--text-light); letter-spacing: 0.06em; }
 
   /* ── Section ── */
   .section {
     position: relative; z-index: 1;
-    max-width: 760px; margin: 0 auto;
+    max-width: 800px; margin: 0 auto;
     padding: 32px 32px 0;
   }
   .section-title {
     font-size: 10px; letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-light);
+    text-transform: uppercase; color: var(--text-light);
     margin-bottom: 16px;
     display: flex; align-items: center; gap: 12px;
   }
-  .section-title::after {
-    content: '';
-    flex: 1; height: 1px;
-    background: var(--border);
-  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
   /* ── Book card ── */
   .book-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-    margin-bottom: 32px;
+    display: flex; flex-direction: column;
+    gap: 16px; margin-bottom: 32px;
   }
 
   .book-card {
     background: var(--paper);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 22px 20px 18px;
-    text-decoration: none;
+    padding: 22px 24px 20px;
     color: inherit;
-    display: flex; flex-direction: column;
-    gap: 12px;
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
     box-shadow: 0 2px 8px var(--shadow);
-    cursor: pointer;
-  }
-  .book-card:active {
-    transform: scale(0.98);
-    box-shadow: 0 1px 4px var(--shadow);
-  }
-  .book-card:hover {
-    border-color: var(--border-dark);
-    box-shadow: 0 4px 16px var(--shadow);
   }
 
   .book-meta {
     display: flex; align-items: flex-start;
     justify-content: space-between; gap: 8px;
+    margin-bottom: 14px;
   }
-
   .book-tag {
     font-size: 9px; letter-spacing: 0.14em;
     text-transform: uppercase;
     padding: 3px 8px; border-radius: 4px;
-    flex-shrink: 0; margin-top: 2px;
+    flex-shrink: 0; margin-top: 3px;
   }
   .tag-cosmos { background: var(--tag-cosmos); color: var(--tag-cosmos-text); }
   .tag-history { background: var(--tag-history); color: var(--tag-history-text); }
@@ -173,96 +128,82 @@
 
   .book-title {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 20px; font-weight: 600;
-    line-height: 1.25;
-    color: var(--text);
+    font-size: 22px; font-weight: 600;
+    line-height: 1.25; color: var(--text);
   }
   .book-author {
     font-size: 13px; color: var(--text-light);
-    font-style: italic;
-    margin-top: -6px;
+    font-style: italic; margin-top: 3px;
   }
 
-  .book-progress {
-    display: flex; flex-direction: column; gap: 5px;
-  }
-  .progress-track {
-    height: 3px; background: var(--border);
-    border-radius: 2px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; background: var(--accent-light);
-    border-radius: 2px;
-    transition: width 0.6s ease;
-  }
+  /* ── Progress ── */
+  .book-progress { margin-bottom: 14px; }
+  .progress-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent-light); border-radius: 2px; transition: width 0.6s ease; }
   .progress-label {
     font-size: 11px; color: var(--text-light);
     display: flex; justify-content: space-between;
+    margin-top: 5px;
   }
 
-  .book-links {
-    display: flex; gap: 8px;
-    margin-top: 2px;
+  /* ── Chapter list ── */
+  .chapter-list { list-style: none; border-top: 1px solid var(--border); }
+  .chapter-item {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
   }
-  .book-link {
-    flex: 1;
-    padding: 8px;
-    border-radius: 7px;
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-info { flex: 1; min-width: 0; }
+  .chapter-name {
+    font-size: 13px; color: var(--text-mid);
+    line-height: 1.4; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .chapter-num {
+    font-size: 10px; color: var(--text-light);
+    letter-spacing: 0.08em; margin-right: 5px;
+  }
+  .chapter-words {
+    font-size: 11px; color: var(--text-light);
+    margin-top: 1px;
+  }
+  .chapter-btns { display: flex; gap: 5px; flex-shrink: 0; }
+  .chapter-btn {
+    padding: 5px 11px; border-radius: 6px;
     border: 1px solid var(--border);
     background: transparent;
-    font-family: inherit; font-size: 12px;
-    color: var(--text-mid);
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    transition: all 0.15s;
-    -webkit-appearance: none;
-    display: flex; align-items: center;
-    justify-content: center; gap: 4px;
+    font-family: inherit; font-size: 11px;
+    color: var(--text-mid); text-decoration: none;
+    transition: all 0.15s; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 3px;
   }
-  .book-link:active {
-    background: var(--bg);
-    border-color: var(--border-dark);
-  }
-  .book-link.primary {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-  .book-link.primary:active {
-    background: #5a3520;
-  }
+  .chapter-btn:active { background: var(--bg); border-color: var(--border-dark); }
+  .chapter-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chapter-btn.primary:active { background: #5a3520; }
 
   /* ── Placeholder card ── */
   .book-card.placeholder {
-    border-style: dashed;
-    background: transparent;
-    box-shadow: none;
-    opacity: 0.5;
-    cursor: default;
-    align-items: center; justify-content: center;
-    min-height: 140px;
-  }
-  .book-card.placeholder:hover {
-    border-color: var(--border);
-    box-shadow: none;
+    border-style: dashed; background: transparent;
+    box-shadow: none; opacity: 0.5;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100px;
   }
   .placeholder-text {
     font-size: 13px; color: var(--text-light);
-    font-style: italic; text-align: center;
-    line-height: 1.6;
+    font-style: italic; text-align: center; line-height: 1.7;
   }
 
   /* ── Footer ── */
   footer {
     position: relative; z-index: 1;
-    max-width: 760px; margin: 40px auto 0;
+    max-width: 800px; margin: 40px auto 0;
     padding: 20px 32px;
     border-top: 1px solid var(--border);
     font-size: 11px; color: var(--text-light);
-    font-style: italic;
-    text-align: center;
-    line-height: 1.7;
+    font-style: italic; text-align: center; line-height: 1.7;
   }
 </style>
 </head>
@@ -276,11 +217,11 @@
 
 <div class="stats-bar">
   <div class="stat">
-    <div class="stat-num" id="total-books">1</div>
+    <div class="stat-num">3</div>
     <div class="stat-label">在读书目</div>
   </div>
   <div class="stat">
-    <div class="stat-num" id="total-words">77</div>
+    <div class="stat-num">77</div>
     <div class="stat-label">累计词汇</div>
   </div>
   <div class="stat">
@@ -293,7 +234,7 @@
   <div class="section-title">进行中</div>
   <div class="book-grid">
 
-    <!-- The Last Three Minutes -->
+    <!-- ① The Last Three Minutes -->
     <div class="book-card">
       <div class="book-meta">
         <div>
@@ -307,22 +248,31 @@
           <div class="progress-fill" style="width: 8%"></div>
         </div>
         <div class="progress-label">
-          <span>序言 · 77词</span>
+          <span>序言已完成 · 77词</span>
           <span id="known-tlm">—</span>
         </div>
       </div>
-      <div class="book-links">
-        <a class="book-link primary" href="001-the-last-three-minutes/001_Preface_Notes.html">📖 阅读</a>
-        <a class="book-link" href="001-the-last-three-minutes/vocab_cards.html">🗂 词卡</a>
-      </div>
+      <ul class="chapter-list">
+        <li class="chapter-item">
+          <div class="chapter-info">
+            <div class="chapter-name"><span class="chapter-num">001</span>Preface</div>
+            <div class="chapter-words">77 词</div>
+          </div>
+          <div class="chapter-btns">
+            <a class="chapter-btn primary" href="001-the-last-three-minutes/001_Preface_Notes.html">📖 Notes</a>
+            <a class="chapter-btn" href="001-the-last-three-minutes/001_Preface_Cards.html">🗂 Cards</a>
+          </div>
+        </li>
+        <!-- 以后每章在此添加一行，格式同上 -->
+      </ul>
     </div>
 
-    <!-- SPQR placeholder -->
+    <!-- ② SPQR -->
     <div class="book-card placeholder">
       <div class="placeholder-text">SPQR: A History of Ancient Rome<br>Mary Beard<br><br>即将开始</div>
     </div>
 
-    <!-- Why Evolution Is True placeholder -->
+    <!-- ③ Why Evolution Is True -->
     <div class="book-card placeholder">
       <div class="placeholder-text">Why Evolution Is True<br>Jerry Coyne<br><br>即将开始</div>
     </div>
@@ -335,7 +285,6 @@
 </footer>
 
 <script>
-// 读取各书的已掌握数量（从localStorage）
 function getKnownCount(key) {
   try {
     const saved = localStorage.getItem(key);
@@ -345,15 +294,11 @@ function getKnownCount(key) {
   } catch(e) { return null; }
 }
 
-function fmt(n) { return n === null ? '—' : n; }
-
-// The Last Three Minutes
-const knownTLM = getKnownCount('tlm_reading_known') ?? getKnownCount('tlm_vocab_state');
+const knownTLM = getKnownCount('tlm_preface_known') ?? getKnownCount('tlm_cards_state');
 document.getElementById('known-tlm').textContent = knownTLM !== null ? `已掌握 ${knownTLM}` : '未开始';
 
-// Total known
 const totalKnown = [knownTLM].filter(n => n !== null).reduce((a, b) => a + b, 0);
-document.getElementById('total-known').textContent = fmt(totalKnown || null);
+document.getElementById('total-known').textContent = totalKnown || '—';
 </script>
 </body>
 </html>

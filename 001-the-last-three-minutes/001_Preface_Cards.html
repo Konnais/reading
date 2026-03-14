@@ -4,256 +4,177 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>The Last Three Minutes — 词汇卡片</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>The Last Three Minutes — Preface 词卡</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap');
 
   :root {
-    --bg: #0f0e0c;
-    --surface: #1a1814;
-    --card-bg: #211f1b;
-    --card-hover: #2a2720;
-    --card-known: #1a2218;
-    --card-unknown: #221818;
-    --border: #333028;
-    --border-known: #2d4a28;
-    --border-unknown: #4a2828;
-    --text-primary: #e8e0d0;
-    --text-secondary: #9a9080;
-    --text-muted: #5a5448;
-    --accent: #c8a96e;
-    --accent-dim: #7a6640;
-    --known-color: #5a8f52;
-    --unknown-color: #8f5252;
-    --overlay-bg: rgba(10, 9, 8, 0.92);
+    --bg: #f2ede6;
+    --paper: #fdfaf6;
+    --card-bg: #faf7f2;
+    --card-known: #f0f5ef;
+    --card-unknown: #faf0f0;
+    --text: #2c2416;
+    --text-mid: #6b5d4e;
+    --text-muted: #a8967e;
+    --accent: #7a4f2e;
+    --accent-light: #c4956a;
+    --border: #e2d8cc;
+    --border-dark: #c8b89e;
+    --border-known: #a8d4a0;
+    --border-unknown: #d4a8a8;
+    --known-color: #4a7a44;
+    --unknown-color: #7a4444;
+    --known-bg: #eef5ec;
+    --shadow: rgba(60, 35, 10, 0.08);
+    --overlay-bg: rgba(42, 36, 32, 0.38);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   html, body {
-    width: 100%; height: 100%;
     background: var(--bg);
-    color: var(--text-primary);
-    font-family: 'Source Serif 4', 'Noto Serif SC', 'STSong', Georgia, serif;
-    overflow: hidden;
+    color: var(--text);
+    font-family: 'Crimson Pro', 'Noto Serif SC', 'STSong', Georgia, serif;
+    min-height: 100%;
   }
 
-  /* ── Header ── */
   #header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    height: 56px;
-    background: linear-gradient(180deg, #0f0e0c 60%, transparent);
+    height: 54px; background: var(--paper);
+    border-bottom: 1px solid var(--border-dark);
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 20px;
-    border-bottom: 1px solid var(--border);
   }
+  #header-left { display: flex; flex-direction: column; gap: 1px; }
   #header h1 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 15px; font-weight: 400; font-style: italic;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px; font-weight: 400; font-style: italic;
     color: var(--accent);
-    letter-spacing: 0.02em;
   }
-  #stats {
-    font-size: 12px; color: var(--text-muted);
-    display: flex; gap: 16px; align-items: center;
+  #header .subtitle { font-size: 10px; color: var(--text-muted); }
+  #back-link {
+    font-size: 11px; color: var(--text-muted);
+    text-decoration: none; padding: 4px 10px;
+    border-radius: 6px; border: 1px solid var(--border);
   }
-  #stats span { display: flex; align-items: center; gap: 4px; }
-  .dot { width: 7px; height: 7px; border-radius: 50%; }
-  .dot-known { background: var(--known-color); }
-  .dot-unknown { background: var(--unknown-color); }
 
-  /* ── Filter bar ── */
   #filters {
-    position: fixed; top: 56px; left: 0; right: 0; z-index: 100;
-    height: 44px;
-    background: var(--bg);
-    display: flex; align-items: center; gap: 8px;
-    padding: 0 16px;
+    position: fixed; top: 54px; left: 0; right: 0; z-index: 100;
+    height: 42px; background: var(--paper);
     border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 7px; padding: 0 16px;
   }
   .filter-btn {
-    padding: 5px 14px; border-radius: 20px;
+    padding: 4px 13px; border-radius: 16px;
     border: 1px solid var(--border);
-    background: transparent; color: var(--text-secondary);
+    background: transparent; color: var(--text-mid);
     font-family: inherit; font-size: 12px;
-    cursor: pointer; transition: all 0.2s;
-    -webkit-appearance: none;
+    cursor: pointer; transition: all 0.18s; -webkit-appearance: none;
   }
-  .filter-btn.active {
-    background: var(--accent); color: var(--bg);
-    border-color: var(--accent); font-weight: 600;
-  }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
 
-  /* ── Card grid ── */
+  #stats-row {
+    position: fixed; top: 96px; left: 0; right: 0; z-index: 99;
+    height: 32px; background: var(--bg);
+    display: flex; align-items: center;
+    padding: 0 18px; gap: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+  .stat-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .dot-known { background: var(--known-color); }
+  .dot-unknown { background: var(--unknown-color); }
+  .dot-fresh { background: var(--border-dark); }
+
   #grid-container {
-    position: fixed; top: 100px; left: 0; right: 0; bottom: 0;
+    position: fixed; top: 128px; left: 0; right: 0; bottom: 0;
     overflow-y: auto; overflow-x: hidden;
-    padding: 12px 12px 40px;
+    padding: 12px 12px 32px;
     -webkit-overflow-scrolling: touch;
   }
   #grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
     gap: 8px;
   }
 
-  /* ── Individual card ── */
   .card {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 14px 12px 12px;
+    padding: 13px 11px 11px;
     cursor: pointer;
-    transition: transform 0.15s ease, background 0.2s, border-color 0.2s;
-    min-height: 88px;
+    transition: transform 0.14s, border-color 0.18s, background 0.18s, opacity 0.18s;
+    min-height: 86px;
     display: flex; flex-direction: column; justify-content: space-between;
     position: relative;
     user-select: none; -webkit-user-select: none;
+    box-shadow: 0 1px 4px var(--shadow);
   }
   .card:active { transform: scale(0.95); }
-  .card.known {
-    background: var(--card-known);
-    border-color: var(--border-known);
-    opacity: 0.6;
-  }
-  .card.unknown {
-    background: var(--card-unknown);
-    border-color: var(--border-unknown);
-  }
+  .card.known { background: var(--card-known); border-color: var(--border-known); opacity: 0.65; }
+  .card.unknown { background: var(--card-unknown); border-color: var(--border-unknown); }
   .card-word {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: 15px; font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.2;
-    margin-bottom: 4px;
+    color: var(--text); line-height: 1.2; margin-bottom: 3px;
   }
-  .card.known .card-word { color: var(--text-muted); }
-  .card-phonetic {
-    font-size: 10px; color: var(--text-muted);
-    font-style: italic; line-height: 1.3;
-  }
-  .card-zh {
-    font-size: 11px; color: var(--accent-dim);
-    margin-top: 6px; line-height: 1.3;
-  }
+  .card.known .card-word { color: var(--text-muted); font-weight: 400; }
+  .card-phonetic { font-size: 10px; color: var(--text-muted); font-style: italic; }
+  .card-zh { font-size: 11px; color: var(--accent); margin-top: 6px; line-height: 1.3; }
   .card.known .card-zh { color: var(--text-muted); }
-  .card-status {
-    position: absolute; top: 8px; right: 8px;
-    width: 6px; height: 6px; border-radius: 50%;
-  }
+  .card-status { position: absolute; top: 8px; right: 8px; width: 6px; height: 6px; border-radius: 50%; }
   .card.known .card-status { background: var(--known-color); }
   .card.unknown .card-status { background: var(--unknown-color); }
 
-  /* ── Modal overlay ── */
   #overlay {
     position: fixed; inset: 0; z-index: 200;
     background: var(--overlay-bg);
     display: flex; align-items: center; justify-content: center;
-    padding: 24px;
+    padding: 32px 24px;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.25s ease;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    transition: opacity 0.22s ease;
+    backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
   }
   #overlay.visible { opacity: 1; pointer-events: all; }
 
   #modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--paper);
+    border: 1px solid var(--border-dark);
     border-radius: 20px;
-    width: 100%; max-width: 480px;
-    padding: 36px 32px 28px;
-    position: relative;
-    transform: scale(0.92) translateY(16px);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    width: 100%; max-width: 460px;
+    padding: 34px 30px 26px;
+    box-shadow: 0 28px 72px var(--shadow);
+    transform: scale(0.92) translateY(14px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.5, 0.64, 1);
   }
-  #overlay.visible #modal {
-    transform: scale(1) translateY(0);
-  }
+  #overlay.visible #modal { transform: scale(1) translateY(0); }
 
   #modal-word {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 38px; font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.1; margin-bottom: 6px;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 40px; font-weight: 600;
+    color: var(--text); line-height: 1.1; margin-bottom: 4px;
   }
-  #modal-phonetic {
-    font-size: 15px; color: var(--accent);
-    font-style: italic; margin-bottom: 24px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  #speak-btn {
-    width: 28px; height: 28px;
-    background: var(--accent); border: none; border-radius: 50%;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: transform 0.15s;
-  }
-  #speak-btn:active { transform: scale(0.9); }
-  #speak-btn svg { width: 14px; height: 14px; fill: var(--bg); }
+  #modal-phonetic { font-size: 15px; color: var(--accent-light); font-style: italic; margin-bottom: 22px; }
+  .modal-divider { height: 1px; background: var(--border); margin: 0 -30px 18px; }
+  #modal-pos { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px; }
+  #modal-en { font-size: 16px; color: var(--text-mid); font-style: italic; line-height: 1.65; margin-bottom: 14px; }
+  #modal-zh { font-size: 30px; color: var(--text); font-weight: 300; line-height: 1.3; margin-bottom: 28px; }
 
-  .modal-divider {
-    height: 1px; background: var(--border); margin: 0 -32px 20px;
-  }
-
-  #modal-pos {
-    font-size: 11px; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 0.12em;
-    margin-bottom: 10px;
-  }
-  #modal-en {
-    font-size: 16px; color: var(--text-secondary);
-    line-height: 1.6; margin-bottom: 16px;
-    font-style: italic;
-  }
-  #modal-zh {
-    font-size: 28px; color: var(--text-primary);
-    font-weight: 300; line-height: 1.3;
-    margin-bottom: 32px;
-  }
-
-  /* ── Modal action buttons ── */
-  #modal-actions {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
+  #modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .action-btn {
-    padding: 14px; border-radius: 12px;
-    border: 1px solid; font-family: inherit;
-    font-size: 14px; cursor: pointer;
-    transition: all 0.15s; -webkit-appearance: none;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 12px; border-radius: 10px; border: 1px solid;
+    font-family: inherit; font-size: 13px; cursor: pointer;
+    transition: all 0.14s; -webkit-appearance: none;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
   }
   .action-btn:active { transform: scale(0.97); }
-  #btn-known {
-    background: rgba(90, 143, 82, 0.15);
-    border-color: var(--known-color);
-    color: var(--known-color);
-  }
-  #btn-unknown {
-    background: rgba(143, 82, 82, 0.15);
-    border-color: var(--unknown-color);
-    color: var(--unknown-color);
-  }
-  #btn-close {
-    grid-column: 1 / -1;
-    background: transparent;
-    border-color: var(--border);
-    color: var(--text-muted);
-    font-size: 13px;
-  }
+  #btn-known { background: var(--known-bg); border-color: var(--border-known); color: var(--known-color); }
+  #btn-unknown { background: #faf0f0; border-color: var(--border-unknown); color: var(--unknown-color); }
+  #btn-close { grid-column: 1 / -1; background: transparent; border-color: var(--border); color: var(--text-muted); font-size: 12px; }
 
-  /* ── Source tag ── */
-  #source-tag {
-    position: absolute; bottom: -1px; right: 24px;
-    background: var(--accent); color: var(--bg);
-    font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 10px; border-radius: 6px 6px 0 0;
-  }
-
-  /* scrollbar */
   #grid-container::-webkit-scrollbar { width: 3px; }
   #grid-container::-webkit-scrollbar-track { background: transparent; }
   #grid-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -262,11 +183,11 @@
 <body>
 
 <div id="header">
-  <h1>The Last Three Minutes</h1>
-  <div id="stats">
-    <span><span class="dot dot-known"></span><span id="count-known">0</span> 已掌握</span>
-    <span><span class="dot dot-unknown"></span><span id="count-unknown">0</span> 待复习</span>
+  <div id="header-left">
+    <h1>The Last Three Minutes — Preface</h1>
+    <span class="subtitle">点击卡片查看释义，自动朗读</span>
   </div>
+  <a id="back-link" href="../index.html">← 书库</a>
 </div>
 
 <div id="filters">
@@ -276,23 +197,18 @@
   <button class="filter-btn" data-filter="fresh">未标记</button>
 </div>
 
-<div id="grid-container">
-  <div id="grid"></div>
+<div id="stats-row">
+  <span class="stat-item"><span class="stat-dot dot-known"></span><span id="cnt-known">0</span> 已掌握</span>
+  <span class="stat-item"><span class="stat-dot dot-unknown"></span><span id="cnt-unknown">0</span> 待复习</span>
+  <span class="stat-item"><span class="stat-dot dot-fresh"></span><span id="cnt-fresh">0</span> 未标记</span>
 </div>
 
-<!-- Modal -->
+<div id="grid-container"><div id="grid"></div></div>
+
 <div id="overlay">
   <div id="modal">
-    <div id="source-tag">The Last Three Minutes</div>
     <div id="modal-word"></div>
-    <div id="modal-phonetic">
-      <span id="modal-phonetic-text"></span>
-      <button id="speak-btn" title="朗读">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-        </svg>
-      </button>
-    </div>
+    <div id="modal-phonetic"></div>
     <div class="modal-divider"></div>
     <div id="modal-pos"></div>
     <div id="modal-en"></div>
@@ -332,16 +248,20 @@ const WORDS = [
   {"word":"catalog","phonetic":"/ˈkætəlɒɡ/","pos":"v.","en_def":"to record or list something systematically","zh_def":"逐一列举，记录"},
   {"word":"such is the pace","phonetic":"—","pos":"phr.","en_def":"used to emphasize how fast something is progressing","zh_def":"如此之快的速度"},
   {"word":"fare","phonetic":"/fer/","pos":"n.","en_def":"material offered to the public; a range of things available","zh_def":"内容，素材"},
+  {"word":"aptly","phonetic":"/ˈæptli/","pos":"adv.","en_def":"in a way that is appropriate or suitable","zh_def":"恰当地，贴切地"},
+  {"word":"mere","phonetic":"/mɪər/","pos":"adj.","en_def":"used to emphasize how small or insignificant something is","zh_def":"仅仅的，不过是"},
   {"word":"catch up","phonetic":"/kætʃ ʌp/","pos":"phr.v.","en_def":"to reach the same level or standard as others","zh_def":"赶上，跟上"},
   {"word":"heady","phonetic":"/ˈhedi/","pos":"adj.","en_def":"having a strong or exciting effect","zh_def":"令人兴奋的，刺激的"},
   {"word":"infinitesimal","phonetic":"/ˌɪnfɪnɪˈtesɪməl/","pos":"adj.","en_def":"extremely small","zh_def":"极微小的"},
   {"word":"confidently","phonetic":"/ˈkɒnfɪdəntli/","pos":"adv.","en_def":"in a way that shows certainty and self-assurance","zh_def":"自信地"},
+  {"word":"laughter","phonetic":"/ˈlæftər/","pos":"n.","en_def":"the act or sound of laughing","zh_def":"笑，笑声"},
   {"word":"hollow","phonetic":"/ˈhɒloʊ/","pos":"adj.","en_def":"without real meaning or sincerity","zh_def":"空洞的，无意义的"},
   {"word":"whimper","phonetic":"/ˈwɪmpər/","pos":"n.","en_def":"a weak or feeble sound or ending","zh_def":"无声无息的结束"},
   {"word":"descendant","phonetic":"/dɪˈsendənt/","pos":"n.","en_def":"a person or thing that comes from an earlier form or person","zh_def":"后代，后裔"},
   {"word":"eternity","phonetic":"/ɪˈtɜːrnɪti/","pos":"n.","en_def":"infinite or unending time","zh_def":"永恒，永远"},
   {"word":"Armageddon","phonetic":"/ˌɑːrməˈɡedən/","pos":"n.","en_def":"a dramatic and catastrophic conflict; the end of the world","zh_def":"世界末日，大决战"},
   {"word":"beset","phonetic":"/bɪˈset/","pos":"v.","en_def":"to trouble or threaten persistently","zh_def":"困扰，围困"},
+  {"word":"reflect","phonetic":"/rɪˈflekt/","pos":"v.","en_def":"to think carefully and deeply about something","zh_def":"深思，反思"},
   {"word":"apocalyptic","phonetic":"/əˌpɒkəˈlɪptɪk/","pos":"adj.","en_def":"describing or suggesting widespread disaster or the end of the world","zh_def":"世界末日的，灾难性的"},
   {"word":"unprecedented","phonetic":"/ʌnˈpresɪdentɪd/","pos":"adj.","en_def":"never having happened or existed before","zh_def":"前所未有的"},
   {"word":"cease","phonetic":"/siːs/","pos":"v.","en_def":"to come to an end; to stop","zh_def":"停止，终止"},
@@ -352,77 +272,71 @@ const WORDS = [
   {"word":"camouflage","phonetic":"/ˈkæməflɑːʒ/","pos":"v.","en_def":"to hide or disguise something","zh_def":"掩盖，掩饰"},
   {"word":"speculative","phonetic":"/ˈspekjələtɪv/","pos":"adj.","en_def":"based on guessing or uncertain information rather than known facts","zh_def":"推测性的，猜测的"},
   {"word":"futurology","phonetic":"/ˌfjuːtʃəˈrɒlədʒi/","pos":"n.","en_def":"the study or prediction of future events based on current trends","zh_def":"未来学"},
+  {"word":"endeavor","phonetic":"/ɪnˈdevər/","pos":"n.","en_def":"a serious attempt or effort to do something","zh_def":"努力，事业"},
   {"word":"temptation","phonetic":"/temˈteɪʃən/","pos":"n.","en_def":"a strong desire to do something","zh_def":"诱惑，冲动"},
   {"word":"speculate","phonetic":"/ˈspekjuleɪt/","pos":"v.","en_def":"to form opinions without firm evidence","zh_def":"推测，猜测"},
   {"word":"destiny","phonetic":"/ˈdestɪni/","pos":"n.","en_def":"the events that will happen to someone or something in the future","zh_def":"命运，天数"},
   {"word":"irresistible","phonetic":"/ˌɪrɪˈzɪstɪbəl/","pos":"adj.","en_def":"too strong or appealing to be resisted","zh_def":"不可抗拒的"},
   {"word":"inquiry","phonetic":"/ɪnˈkwaɪəri/","pos":"n.","en_def":"an act of seeking information or asking questions","zh_def":"探究，探索"},
+  {"word":"degeneration","phonetic":"/dɪˌdʒenəˈreɪʃən/","pos":"n.","en_def":"the process of becoming worse or less functional over time","zh_def":"退化，衰退"},
   {"word":"catastrophically","phonetic":"/ˌkætəˈstrɒfɪkli/","pos":"adv.","en_def":"in a way that causes sudden and widespread disaster","zh_def":"灾难性地"},
+  {"word":"immense","phonetic":"/ɪˈmens/","pos":"adj.","en_def":"extremely large or great","zh_def":"巨大的，广大的"},
   {"word":"neutron","phonetic":"/ˈnjuːtrɒn/","pos":"n.","en_def":"a subatomic particle with no electric charge found in the nucleus of an atom","zh_def":"中子"},
   {"word":"endure","phonetic":"/ɪnˈdjʊər/","pos":"v.","en_def":"to last or continue for a long time","zh_def":"持续，延续"},
   {"word":"subtle","phonetic":"/ˈsʌtəl/","pos":"adj.","en_def":"not immediately obvious; difficult to detect","zh_def":"微妙的，不易察觉的"},
   {"word":"conjecture","phonetic":"/kənˈdʒektʃər/","pos":"v.","en_def":"to form an opinion without sufficient evidence","zh_def":"推测，猜测"},
   {"word":"eventually","phonetic":"/ɪˈventʃuəli/","pos":"adv.","en_def":"at some later time; in the end","zh_def":"最终，终究"},
   {"word":"deduce","phonetic":"/dɪˈdjuːs/","pos":"v.","en_def":"to reach a conclusion by reasoning from evidence","zh_def":"推断，推论"},
+  {"word":"employ","phonetic":"/ɪmˈplɔɪ/","pos":"v.","en_def":"to make use of something","zh_def":"运用，使用"},
   {"word":"extrapolate","phonetic":"/ɪkˈstræpəleɪt/","pos":"v.","en_def":"to extend known data or conclusions into an unknown area","zh_def":"推断，外推"},
   {"word":"bearing","phonetic":"/ˈberɪŋ/","pos":"n.","en_def":"relevance or relation to something","zh_def":"关联，影响"},
   {"word":"emission","phonetic":"/ɪˈmɪʃən/","pos":"n.","en_def":"the production and discharge of something, especially radiation","zh_def":"发射，辐射"},
   {"word":"proton","phonetic":"/ˈproʊtɒn/","pos":"n.","en_def":"a subatomic particle with a positive electric charge found in the nucleus of an atom","zh_def":"质子"},
+  {"word":"enthusiastically","phonetic":"/ɪnˌθjuːziˈæstɪkli/","pos":"adv.","en_def":"in a way that shows great excitement or eagerness","zh_def":"热情地，热切地"},
   {"word":"realm","phonetic":"/relm/","pos":"n.","en_def":"an area or domain of activity or knowledge","zh_def":"领域，范畴"},
   {"word":"eon","phonetic":"/ˈiːɒn/","pos":"n.","en_def":"an indefinitely long period of time","zh_def":"极长的时期，亿万年"},
+  {"word":"fascination","phonetic":"/ˌfæsɪˈneɪʃən/","pos":"n.","en_def":"the state of being intensely interested in or attracted to something","zh_def":"着迷，强烈的兴趣"},
   {"word":"intimately","phonetic":"/ˈɪntɪmətli/","pos":"adv.","en_def":"in a way that is closely connected or associated","zh_def":"密切地，紧密地"},
   {"word":"bound up with","phonetic":"/baʊnd ʌp wɪð/","pos":"phr.","en_def":"closely connected or associated with something","zh_def":"与……密切相关"},
   {"word":"consciousness","phonetic":"/ˈkɒnʃəsnəs/","pos":"n.","en_def":"the state of being aware of one's own existence and surroundings","zh_def":"意识，知觉"},
-  {"word":"conscious","phonetic":"/ˈkɒnʃəs/","pos":"adj.","en_def":"aware of and able to think and perceive","zh_def":"有意识的，有知觉的"},
-  {"word":"aptly","phonetic":"/ˈæptli/","pos":"adv.","en_def":"in a way that is appropriate or suitable","zh_def":"恰当地，贴切地"},
-  {"word":"mere","phonetic":"/mɪər/","pos":"adj.","en_def":"used to emphasize how small or insignificant something is","zh_def":"仅仅的，不过是"},
-  {"word":"laughter","phonetic":"/ˈlæftər/","pos":"n.","en_def":"the act or sound of laughing","zh_def":"笑，笑声"},
-  {"word":"reflect","phonetic":"/rɪˈflekt/","pos":"v.","en_def":"to think carefully and deeply about something","zh_def":"深思，反思"},
-  {"word":"endeavor","phonetic":"/ɪnˈdevər/","pos":"n.","en_def":"a serious attempt or effort to do something","zh_def":"努力，事业"},
-  {"word":"immense","phonetic":"/ɪˈmens/","pos":"adj.","en_def":"extremely large or great","zh_def":"巨大的，广大的"},
-  {"word":"employ","phonetic":"/ɪmˈplɔɪ/","pos":"v.","en_def":"to make use of something","zh_def":"运用，使用"},
-  {"word":"enthusiastically","phonetic":"/ɪnˌθjuːziˈæstɪkli/","pos":"adv.","en_def":"in a way that shows great excitement or eagerness","zh_def":"热情地，热切地"},
-  {"word":"fascination","phonetic":"/ˌfæsɪˈneɪʃən/","pos":"n.","en_def":"the state of being intensely interested in or attracted to something","zh_def":"着迷，强烈的兴趣"},
-  {"word":"degeneration","phonetic":"/dɪˌdʒenəˈreɪʃən/","pos":"n.","en_def":"the process of becoming worse or less functional over time","zh_def":"退化，衰退"}
+  {"word":"conscious","phonetic":"/ˈkɒnʃəs/","pos":"adj.","en_def":"aware of and able to think and perceive","zh_def":"有意识的，有知觉的"}
 ];
 
-// State
 const state = {};
-WORDS.forEach(w => state[w.word] = 'fresh'); // 'fresh' | 'known' | 'unknown'
+WORDS.forEach(w => state[w.word] = 'fresh');
 let currentFilter = 'all';
 let currentWord = null;
 
-// Load state from localStorage
 try {
-  const saved = localStorage.getItem('tlm_vocab_state');
+  const saved = localStorage.getItem('tlm_cards_state');
   if (saved) Object.assign(state, JSON.parse(saved));
 } catch(e) {}
 
 function saveState() {
-  try { localStorage.setItem('tlm_vocab_state', JSON.stringify(state)); } catch(e) {}
+  try { localStorage.setItem('tlm_cards_state', JSON.stringify(state)); } catch(e) {}
 }
 
 function updateStats() {
-  const known = Object.values(state).filter(v => v === 'known').length;
-  const unknown = Object.values(state).filter(v => v === 'unknown').length;
-  document.getElementById('count-known').textContent = known;
-  document.getElementById('count-unknown').textContent = unknown;
+  const vals = Object.values(state);
+  document.getElementById('cnt-known').textContent = vals.filter(v => v === 'known').length;
+  document.getElementById('cnt-unknown').textContent = vals.filter(v => v === 'unknown').length;
+  document.getElementById('cnt-fresh').textContent = vals.filter(v => v === 'fresh').length;
 }
 
-function getFilteredWords() {
+function getFiltered() {
   if (currentFilter === 'all') return WORDS;
   return WORDS.filter(w => state[w.word] === currentFilter);
 }
 
 function renderGrid() {
   const grid = document.getElementById('grid');
-  const filtered = getFilteredWords();
   grid.innerHTML = '';
-  filtered.forEach(w => {
+  getFiltered().forEach(w => {
+    const s = state[w.word];
     const card = document.createElement('div');
-    card.className = 'card' + (state[w.word] !== 'fresh' ? ' ' + state[w.word] : '');
+    card.className = 'card' + (s !== 'fresh' ? ' ' + s : '');
     card.innerHTML = `
-      ${state[w.word] !== 'fresh' ? '<div class="card-status"></div>' : ''}
+      ${s !== 'fresh' ? '<div class="card-status"></div>' : ''}
       <div>
         <div class="card-word">${w.word}</div>
         <div class="card-phonetic">${w.phonetic}</div>
@@ -435,21 +349,27 @@ function renderGrid() {
   updateStats();
 }
 
+function speak(word) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(word);
+    u.lang = 'en-US'; u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+}
+
 function openModal(w) {
   currentWord = w;
   document.getElementById('modal-word').textContent = w.word;
-  document.getElementById('modal-phonetic-text').textContent = w.phonetic;
+  document.getElementById('modal-phonetic').textContent = w.phonetic;
   document.getElementById('modal-pos').textContent = w.pos;
   document.getElementById('modal-en').textContent = w.en_def;
   document.getElementById('modal-zh').textContent = w.zh_def;
-
-  // Update button states
-  const btnKnown = document.getElementById('btn-known');
-  const btnUnknown = document.getElementById('btn-unknown');
-  btnKnown.style.opacity = state[w.word] === 'known' ? '1' : '0.6';
-  btnUnknown.style.opacity = state[w.word] === 'unknown' ? '1' : '0.6';
-
+  const s = state[w.word];
+  document.getElementById('btn-known').textContent = s === 'known' ? '✓ 已掌握（取消）' : '✓ 已掌握';
+  document.getElementById('btn-unknown').textContent = s === 'unknown' ? '✗ 待复习（取消）' : '✗ 待复习';
   document.getElementById('overlay').classList.add('visible');
+  speak(w.word);
 }
 
 function closeModal() {
@@ -457,17 +377,6 @@ function closeModal() {
   currentWord = null;
 }
 
-function speak(word) {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(word);
-    utter.lang = 'en-US';
-    utter.rate = 0.85;
-    window.speechSynthesis.speak(utter);
-  }
-}
-
-// Filter buttons
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -477,37 +386,30 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-// Speak button
-document.getElementById('speak-btn').addEventListener('click', (e) => {
-  e.stopPropagation();
-  if (currentWord) speak(currentWord.word);
-});
-
-// Known / Unknown buttons
 document.getElementById('btn-known').addEventListener('click', () => {
   if (!currentWord) return;
   state[currentWord.word] = state[currentWord.word] === 'known' ? 'fresh' : 'known';
-  saveState();
-  renderGrid();
-  closeModal();
+  saveState(); renderGrid(); closeModal();
 });
 
 document.getElementById('btn-unknown').addEventListener('click', () => {
   if (!currentWord) return;
   state[currentWord.word] = state[currentWord.word] === 'unknown' ? 'fresh' : 'unknown';
-  saveState();
-  renderGrid();
-  closeModal();
+  saveState(); renderGrid(); closeModal();
 });
 
 document.getElementById('btn-close').addEventListener('click', closeModal);
-
-// Close on overlay tap
-document.getElementById('overlay').addEventListener('click', (e) => {
+document.getElementById('overlay').addEventListener('click', e => {
   if (e.target === document.getElementById('overlay')) closeModal();
 });
 
-// Init
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && document.getElementById('overlay').classList.contains('visible')) {
+    e.preventDefault();
+    closeModal();
+  }
+});
+
 renderGrid();
 </script>
 </body>

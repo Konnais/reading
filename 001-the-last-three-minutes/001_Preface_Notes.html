@@ -4,90 +4,127 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>The Last Three Minutes — 阅读</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>The Last Three Minutes — Preface</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
 
   :root {
-    --bg: #faf8f4;
-    --surface: #ffffff;
-    --text: #2a2420;
-    --text-secondary: #6a5f55;
-    --text-muted: #aaa090;
-    --accent: #8b4513;
-    --accent-light: #f5ede3;
-    --accent-mid: #d4956a;
-    --border: #e8e0d4;
+    --bg: #f7f3ed;
+    --paper: #fdfaf6;
+    --text: #2c2416;
+    --text-secondary: #6b5d4e;
+    --text-muted: #a8967e;
+    --accent: #7a4f2e;
+    --accent-light: #c4956a;
+    --border: #e2d8cc;
+    --border-dark: #c8b89e;
     --highlight: #f0e6d2;
-    --highlight-hover: #e8d8bc;
+    --highlight-active: #e8d8bc;
     --known-bg: #eef5ec;
     --known-border: #a8d4a0;
-    --shadow: rgba(80, 50, 20, 0.12);
+    --known-text: #4a7a44;
+    --shadow: rgba(60, 35, 10, 0.10);
+    --overlay-bg: rgba(42, 36, 32, 0.40);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  html, body {
-    background: var(--bg);
+  html { background: var(--bg); min-height: 100%; }
+
+  body {
+    font-family: 'Crimson Pro', 'Noto Serif SC', 'STSong', Georgia, serif;
     color: var(--text);
-    font-family: 'Source Serif 4', 'Noto Serif SC', 'STSong', Georgia, serif;
-    min-height: 100%;
+    min-height: 100vh;
+    padding-bottom: 60px;
   }
 
   /* ── Header ── */
   #header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 24px 14px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--border-dark);
+    padding: 14px 40px 12px;
     position: sticky; top: 0; z-index: 50;
-    display: flex; align-items: baseline; justify-content: space-between;
+    display: flex; align-items: baseline;
+    justify-content: space-between; gap: 16px;
   }
+  #header-left { display: flex; flex-direction: column; gap: 2px; }
   #header h1 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 16px; font-weight: 400; font-style: italic;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 15px; font-weight: 400; font-style: italic;
     color: var(--accent);
   }
-  #header .subtitle {
-    font-size: 11px; color: var(--text-muted);
+  #header .subtitle { font-size: 11px; color: var(--text-muted); }
+  #back-link {
+    font-size: 12px; color: var(--text-muted);
+    text-decoration: none; white-space: nowrap;
+    padding: 4px 10px; border-radius: 6px;
+    border: 1px solid var(--border);
+    transition: all 0.15s;
   }
+  #back-link:active { background: var(--bg); }
 
   /* ── Article ── */
   #article {
-    max-width: 680px;
+    max-width: 960px;
     margin: 0 auto;
-    padding: 36px 28px 80px;
-    line-height: 1.9;
-    font-size: 17px;
+    padding: 52px 60px 80px;
+    line-height: 1.95;
+    font-size: 18px;
   }
 
-  #article p {
-    margin-bottom: 1.6em;
+  .chapter-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 12px; font-weight: 400;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .chapter-heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 48px; font-weight: 300;
     color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 44px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  #article p { margin-bottom: 1.65em; }
+
+  .acknowledgements {
+    margin-top: 2.2em;
+    padding-top: 1.8em;
+    border-top: 1px solid var(--border);
+    font-style: italic;
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.8;
   }
 
   /* ── Vocab word ── */
   .vocab {
     display: inline;
     background: var(--highlight);
-    border-bottom: 1.5px solid var(--accent-mid);
+    border-bottom: 1.5px solid var(--accent-light);
     border-radius: 2px;
     padding: 0 2px;
     cursor: pointer;
     transition: background 0.15s;
     font-weight: 600;
   }
-  .vocab:active { background: var(--highlight-hover); }
+  .vocab:active { background: var(--highlight-active); }
   .vocab.known {
     background: var(--known-bg);
     border-bottom-color: var(--known-border);
     font-weight: 400;
-    opacity: 0.75;
+    opacity: 0.72;
   }
 
   /* ── Overlay ── */
   #overlay {
     position: fixed; inset: 0; z-index: 200;
-    background: rgba(42, 36, 32, 0.45);
+    background: var(--overlay-bg);
     display: flex; align-items: center; justify-content: center;
     padding: 32px 24px;
     opacity: 0; pointer-events: none;
@@ -97,69 +134,44 @@
   }
   #overlay.visible { opacity: 1; pointer-events: all; }
 
-  /* ── Card ── */
   #card {
-    background: var(--surface);
+    background: var(--paper);
+    border: 1px solid var(--border-dark);
     border-radius: 20px;
-    width: 100%; max-width: 420px;
-    padding: 32px 28px 24px;
+    width: 100%; max-width: 480px;
+    padding: 34px 32px 26px;
     box-shadow: 0 24px 64px var(--shadow);
     transform: scale(0.93) translateY(12px);
     transition: transform 0.28s cubic-bezier(0.34, 1.5, 0.64, 1);
-    position: relative;
   }
-  #overlay.visible #card {
-    transform: scale(1) translateY(0);
-  }
+  #overlay.visible #card { transform: scale(1) translateY(0); }
 
   #card-word {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 36px; font-weight: 700;
-    color: var(--text);
-    line-height: 1.1;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 42px; font-weight: 600;
+    color: var(--text); line-height: 1.1;
     margin-bottom: 4px;
   }
   #card-phonetic {
-    font-size: 14px; color: var(--accent-mid);
-    font-style: italic;
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 20px;
+    font-size: 15px; color: var(--accent-light);
+    font-style: italic; margin-bottom: 22px;
   }
-  #speak-btn {
-    width: 26px; height: 26px;
-    background: var(--accent); border: none; border-radius: 50%;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: transform 0.15s, opacity 0.15s;
-  }
-  #speak-btn:active { transform: scale(0.88); opacity: 0.8; }
-  #speak-btn svg { width: 13px; height: 13px; fill: white; }
-
-  .card-divider {
-    height: 1px; background: var(--border);
-    margin: 0 -28px 18px;
-  }
-
+  .card-divider { height: 1px; background: var(--border); margin: 0 -32px 18px; }
   #card-pos {
     font-size: 10px; color: var(--text-muted);
     text-transform: uppercase; letter-spacing: 0.14em;
     margin-bottom: 8px;
   }
   #card-en {
-    font-size: 15px; color: var(--text-secondary);
-    font-style: italic; line-height: 1.6;
-    margin-bottom: 14px;
+    font-size: 16px; color: var(--text-secondary);
+    font-style: italic; line-height: 1.6; margin-bottom: 14px;
   }
   #card-zh {
-    font-size: 26px; color: var(--text);
-    font-weight: 300; line-height: 1.3;
-    margin-bottom: 26px;
+    font-size: 30px; color: var(--text);
+    font-weight: 300; line-height: 1.3; margin-bottom: 28px;
   }
 
-  /* ── Card buttons ── */
-  #card-actions {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
+  #card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .card-btn {
     padding: 12px; border-radius: 10px;
     border: 1px solid; font-family: inherit;
@@ -168,72 +180,67 @@
     display: flex; align-items: center; justify-content: center; gap: 5px;
   }
   .card-btn:active { transform: scale(0.97); }
-  #btn-known {
-    background: var(--known-bg);
-    border-color: var(--known-border);
-    color: #4a7a44;
-  }
-  #btn-close {
-    grid-column: 1 / -1;
-    background: transparent;
-    border-color: var(--border);
-    color: var(--text-muted);
-  }
+  #btn-known { background: var(--known-bg); border-color: var(--known-border); color: var(--known-text); }
+  #btn-close { background: transparent; border-color: var(--border); color: var(--text-muted); }
 
   /* ── Progress bar ── */
   #progress-bar {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
-    height: 36px;
-    background: var(--surface);
+    height: 38px; background: var(--paper);
     border-top: 1px solid var(--border);
     display: flex; align-items: center;
-    padding: 0 20px; gap: 10px;
+    padding: 0 28px; gap: 12px;
   }
-  #progress-track {
-    flex: 1; height: 5px;
-    background: var(--border); border-radius: 3px; overflow: hidden;
-  }
-  #progress-fill {
-    height: 100%; background: var(--accent-mid);
-    border-radius: 3px;
-    transition: width 0.4s ease;
-  }
-  #progress-label {
+  #progress-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  #progress-fill { height: 100%; background: var(--accent-light); border-radius: 2px; transition: width 0.5s ease; }
+  #progress-label { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+  #cards-link {
     font-size: 11px; color: var(--text-muted);
-    white-space: nowrap;
+    text-decoration: none; padding: 4px 10px;
+    border-radius: 6px; border: 1px solid var(--border);
+    white-space: nowrap; transition: all 0.15s;
   }
+  #cards-link:active { background: var(--bg); }
 </style>
 </head>
 <body>
 
 <div id="header">
-  <h1>The Last Three Minutes</h1>
-  <span class="subtitle">点击加粗词语查看释义</span>
+  <div id="header-left">
+    <h1>The Last Three Minutes · Paul Davies</h1>
+    <span class="subtitle">点击加粗词语查看释义，自动朗读</span>
+  </div>
+  <a id="back-link" href="../index.html">← 书库</a>
 </div>
 
 <div id="article">
 
-<p>When I was a student in the early 1960s, there was <span class="vocab" data-word="intense">intense</span> interest in the problem of the origin of the universe. The big-bang theory, which dated from the 1920s but had been considered seriously only since the 1950s, was well known but far from <span class="vocab" data-word="convincing">convincing</span>. The rival steady-state theory, which did away with a cosmic origin altogether, was still the most fashionable <span class="vocab" data-word="scenario">scenario</span> in some <span class="vocab" data-word="quarter">quarters</span>. Then came the discovery of the cosmic background heat <span class="vocab" data-word="radiation">radiation</span> by Robert Penzias and Arno Wilson in 1965, and the subject was transformed. This, surely, was clear evidence for a hot, violent, abrupt origin of the universe.</p>
+  <div class="chapter-label">The Last Three Minutes</div>
+  <h2 class="chapter-heading">Preface</h2>
 
-<p>Cosmologists <span class="vocab" data-word="feverishly">feverishly</span> worked through the <span class="vocab" data-word="implication">implications</span> of the discovery. How hot was the universe one million years after the big bang? One year after? One second? What sort of physical processes would have occurred in that <span class="vocab" data-word="primeval">primeval</span> <span class="vocab" data-word="inferno">inferno</span>? Might there be <span class="vocab" data-word="relic">relics</span> from the dawn of creation retaining an <span class="vocab" data-word="imprint">imprint</span> of the extreme conditions that must then have <span class="vocab" data-word="prevail">prevailed</span>?</p>
+  <p>When I was a student in the early 1960s, there was <span class="vocab" data-word="intense">intense</span> interest in the problem of the origin of the universe. The big-bang theory, which dated from the 1920s but had been considered seriously only since the 1950s, was well known but far from <span class="vocab" data-word="convincing">convincing</span>. The rival steady-state theory, which did away with a cosmic origin altogether, was still the most fashionable <span class="vocab" data-word="scenario">scenario</span> in some <span class="vocab" data-word="quarter">quarters</span>. Then came the discovery of the cosmic background heat <span class="vocab" data-word="radiation">radiation</span> by Robert Penzias and Arno Wilson in 1965, and the subject was transformed. This, surely, was clear evidence for a hot, violent, abrupt origin of the universe.</p>
 
-<p>I well remember attending a <span class="vocab" data-word="lecture">lecture</span> on cosmology in 1968. The professor finished by reviewing the big-bang theory in the light of the discovery of the background heat radiation. "Some <span class="vocab" data-word="theoretician">theoreticians</span> have <span class="vocab" data-word="give an account of">given an account of</span> the chemical composition of the universe based on the nuclear processes that occurred during the first three minutes after the big bang," he <span class="vocab" data-word="relate">related</span> with a smile. Everyone in the audience laughed <span class="vocab" data-word="uproariously">uproariously</span>. It seemed absurdly ambitious to try to describe the state of the universe just moments after it had come into existence. Even the seventeenth-century <span class="vocab" data-word="archbishop">archbishop</span> James Ussher, whose study of the <span class="vocab" data-word="minutiae">minutiae</span> of <span class="vocab" data-word="biblical">biblical</span> <span class="vocab" data-word="chronology">chronology</span> led him to declare that the universe was created on October 23, 4004 B.C., did not have the <span class="vocab" data-word="temerity">temerity</span> to <span class="vocab" data-word="catalog">catalog</span> the precise sequence of events during the first three minutes.</p>
+  <p>Cosmologists <span class="vocab" data-word="feverishly">feverishly</span> worked through the <span class="vocab" data-word="implication">implications</span> of the discovery. How hot was the universe one million years after the big bang? One year after? One second? What sort of physical processes would have occurred in that <span class="vocab" data-word="primeval">primeval</span> <span class="vocab" data-word="inferno">inferno</span>? Might there be <span class="vocab" data-word="relic">relics</span> from the dawn of creation retaining an <span class="vocab" data-word="imprint">imprint</span> of the extreme conditions that must then have <span class="vocab" data-word="prevail">prevailed</span>?</p>
 
-<p><span class="vocab" data-word="such is the pace">Such is the pace</span> of scientific progress that barely a decade after the discovery of the cosmic background heat radiation, the first three minutes had become standard <span class="vocab" data-word="fare">fare</span> for students. Textbooks were written on the subject. Then in 1977 the American physicist and cosmologist Steven Weinberg published a best-selling book <span class="vocab" data-word="aptly">aptly</span> titled The First Three Minutes. It proved to be a landmark in popular science publishing. Here was one of the world's experts providing the general public with a detailed and totally convincing account of processes that occurred <span class="vocab" data-word="mere">mere</span> moments after the big bang.</p>
+  <p>I well remember attending a <span class="vocab" data-word="lecture">lecture</span> on cosmology in 1968. The professor finished by reviewing the big-bang theory in the light of the discovery of the background heat radiation. "Some <span class="vocab" data-word="theoretician">theoreticians</span> have <span class="vocab" data-word="give an account of">given an account of</span> the chemical composition of the universe based on the nuclear processes that occurred during the first three minutes after the big bang," he <span class="vocab" data-word="relate">related</span> with a smile. Everyone in the audience laughed <span class="vocab" data-word="uproariously">uproariously</span>. It seemed absurdly ambitious to try to describe the state of the universe just moments after it had come into existence. Even the seventeenth-century <span class="vocab" data-word="archbishop">archbishop</span> James Ussher, whose study of the <span class="vocab" data-word="minutiae">minutiae</span> of <span class="vocab" data-word="biblical">biblical</span> <span class="vocab" data-word="chronology">chronology</span> led him to declare that the universe was created on October 23, 4004 B.C., did not have the <span class="vocab" data-word="temerity">temerity</span> to <span class="vocab" data-word="catalog">catalog</span> the precise sequence of events during the first three minutes.</p>
 
-<p>While the public was <span class="vocab" data-word="catch up">catching up</span> with these <span class="vocab" data-word="heady">heady</span> developments, the scientists themselves were moving on. Attention began to shift from what had become known as the early universe—meaning minutes or so after the big bang—to the very early universe—an almost <span class="vocab" data-word="infinitesimal">infinitesimal</span> fraction of a second after the beginning. Another decade or so later and the British mathematical physicist Stephen Hawking was <span class="vocab" data-word="confidently">confidently</span> able to describe, in A Brief History of Time, the latest ideas about the first trillion-trillion-trillionth of a second. The <span class="vocab" data-word="laughter">laughter</span> ending that lecture in 1968 now seems rather <span class="vocab" data-word="hollow">hollow</span>.</p>
+  <p><span class="vocab" data-word="such is the pace">Such is the pace</span> of scientific progress that barely a decade after the discovery of the cosmic background heat radiation, the first three minutes had become standard <span class="vocab" data-word="fare">fare</span> for students. Textbooks were written on the subject. Then in 1977 the American physicist and cosmologist Steven Weinberg published a best-selling book <span class="vocab" data-word="aptly">aptly</span> titled The First Three Minutes. It proved to be a landmark in popular science publishing. Here was one of the world's experts providing the general public with a detailed and totally convincing account of processes that occurred <span class="vocab" data-word="mere">mere</span> moments after the big bang.</p>
 
-<p>With the big-bang theory well established in both the popular and the scientific mind, more and more thought is being given to the future of the universe. We have a good idea how the universe began, but how will it end? What can we say about its ultimate fate? Will the universe finish with a bang or a <span class="vocab" data-word="whimper">whimper</span>—indeed, will it ever end at all? And what of us? Can humanity or our <span class="vocab" data-word="descendant">descendants</span>, be they robotic or flesh and blood, survive for all <span class="vocab" data-word="eternity">eternity</span>?</p>
+  <p>While the public was <span class="vocab" data-word="catch up">catching up</span> with these <span class="vocab" data-word="heady">heady</span> developments, the scientists themselves were moving on. Attention began to shift from what had become known as the early universe—meaning minutes or so after the big bang—to the very early universe—an almost <span class="vocab" data-word="infinitesimal">infinitesimal</span> fraction of a second after the beginning. Another decade or so later and the British mathematical physicist Stephen Hawking was <span class="vocab" data-word="confidently">confidently</span> able to describe, in A Brief History of Time, the latest ideas about the first trillion-trillion-trillionth of a second. The <span class="vocab" data-word="laughter">laughter</span> ending that lecture in 1968 now seems rather <span class="vocab" data-word="hollow">hollow</span>.</p>
 
-<p>It is impossible not to be curious about such matters, even though <span class="vocab" data-word="Armageddon">Armageddon</span> may not be just around the corner. Our struggle for survival on planet Earth, which is currently <span class="vocab" data-word="beset">beset</span> by man-made crises, is placed in a welcome new context when we are forced to <span class="vocab" data-word="reflect">reflect</span> on the cosmological dimension of our existence. The Last Three Minutes is the story of the future of the universe, as best we can predict it, based on the latest thinking by some well-known physicists and cosmologists. It is not all <span class="vocab" data-word="apocalyptic">apocalyptic</span>. In fact, the future holds the promise of <span class="vocab" data-word="unprecedented">unprecedented</span> potential for development and richness of experience. But we cannot ignore the fact that what can come to exist can also <span class="vocab" data-word="cease">cease</span> to exist.</p>
+  <p>With the big-bang theory well established in both the popular and the scientific mind, more and more thought is being given to the future of the universe. We have a good idea how the universe began, but how will it end? What can we say about its ultimate fate? Will the universe finish with a bang or a <span class="vocab" data-word="whimper">whimper</span>—indeed, will it ever end at all? And what of us? Can humanity or our <span class="vocab" data-word="descendant">descendants</span>, be they robotic or flesh and blood, survive for all <span class="vocab" data-word="eternity">eternity</span>?</p>
 
-<p>This book is <span class="vocab" data-word="intend">intended</span> for the general reader. No <span class="vocab" data-word="prior">prior</span> knowledge of science or mathematics is necessary. From time to time, however, I need to discuss very large or very small numbers, and it helps to use a compact mathematical <span class="vocab" data-word="notation">notation</span> known as the powers of ten to represent them. The number one hundred billion, for example, when written out in full, is 100,000,000,000, which is rather <span class="vocab" data-word="cumbersome">cumbersome</span>. There are eleven zeros after the 1 in this number, so we can represent it by writing 10¹¹—in words, "ten to the eleventh power." Similarly, one million is 10⁶ and one trillion is 10¹². And so on. Remember, however, that this notation tends to <span class="vocab" data-word="camouflage">camouflage</span> the rate at which these numbers grow: 10¹² is a hundred times bigger than 10¹⁰; it is a much bigger number, even though it looks almost the same. Powers of ten, used negatively, can also represent very small numbers: thus the fraction one-billionth, or 1/1,000,000,000, becomes 10⁻⁹ ("ten to the minus nine"), because there are nine zeros after the 1 on the bottom of the fraction.</p>
+  <p>It is impossible not to be curious about such matters, even though <span class="vocab" data-word="Armageddon">Armageddon</span> may not be just around the corner. Our struggle for survival on planet Earth, which is currently <span class="vocab" data-word="beset">beset</span> by man-made crises, is placed in a welcome new context when we are forced to <span class="vocab" data-word="reflect">reflect</span> on the cosmological dimension of our existence. The Last Three Minutes is the story of the future of the universe, as best we can predict it, based on the latest thinking by some well-known physicists and cosmologists. It is not all <span class="vocab" data-word="apocalyptic">apocalyptic</span>. In fact, the future holds the promise of <span class="vocab" data-word="unprecedented">unprecedented</span> potential for development and richness of experience. But we cannot ignore the fact that what can come to exist can also <span class="vocab" data-word="cease">cease</span> to exist.</p>
 
-<p>Finally, I should like to warn the reader that this book is necessarily highly <span class="vocab" data-word="speculative">speculative</span>. While most of the ideas to be presented are based on our best current understanding of science, <span class="vocab" data-word="futurology">futurology</span> cannot enjoy the same status as other scientific <span class="vocab" data-word="endeavor">endeavors</span>. Nevertheless, the <span class="vocab" data-word="temptation">temptation</span> to <span class="vocab" data-word="speculate">speculate</span> about the ultimate <span class="vocab" data-word="destiny">destiny</span> of the cosmos is <span class="vocab" data-word="irresistible">irresistible</span>. It is in this spirit of open-minded <span class="vocab" data-word="inquiry">inquiry</span> that I have written this book. The basic scenario of a universe originating in a big bang, then expanding and cooling toward some final state of physical <span class="vocab" data-word="degeneration">degeneration</span>, or perhaps collapsing <span class="vocab" data-word="catastrophically">catastrophically</span>, is fairly well established scientifically. What is far less certain, however, are the dominant physical processes that may occur over the <span class="vocab" data-word="immense">immense</span> time scales involved. Astronomers have a clear idea of the general fate of ordinary stars, and are becoming increasingly confident that they understand the basic properties of <span class="vocab" data-word="neutron">neutron</span> stars and black holes; but if the universe <span class="vocab" data-word="endure">endures</span> for many trillions of years or more, there may be <span class="vocab" data-word="subtle">subtle</span> physical effects about which we can only <span class="vocab" data-word="conjecture">conjecture</span> that <span class="vocab" data-word="eventually">eventually</span> become very important.</p>
+  <p>This book is <span class="vocab" data-word="intend">intended</span> for the general reader. No <span class="vocab" data-word="prior">prior</span> knowledge of science or mathematics is necessary. From time to time, however, I need to discuss very large or very small numbers, and it helps to use a compact mathematical <span class="vocab" data-word="notation">notation</span> known as the powers of ten to represent them. The number one hundred billion, for example, when written out in full, is 100,000,000,000, which is rather <span class="vocab" data-word="cumbersome">cumbersome</span>. There are eleven zeros after the 1 in this number, so we can represent it by writing 10¹¹—in words, "ten to the eleventh power." Similarly, one million is 10⁶ and one trillion is 10¹². And so on. Remember, however, that this notation tends to <span class="vocab" data-word="camouflage">camouflage</span> the rate at which these numbers grow: 10¹² is a hundred times bigger than 10¹⁰; it is a much bigger number, even though it looks almost the same. Powers of ten, used negatively, can also represent very small numbers: thus the fraction one-billionth, or 1/1,000,000,000, becomes 10⁻⁹ ("ten to the minus nine"), because there are nine zeros after the 1 on the bottom of the fraction.</p>
 
-<p>When faced with the problem of our incomplete understanding of nature, all we can do to try and <span class="vocab" data-word="deduce">deduce</span> the ultimate fate of the universe is to <span class="vocab" data-word="employ">employ</span> our best existing theories and <span class="vocab" data-word="extrapolate">extrapolate</span> them to their logical conclusions. The problem is that many of the theories having an important <span class="vocab" data-word="bearing">bearing</span> on the fate of the universe remain to be tested experimentally. Some of the processes I discuss—for example, gravitational-wave <span class="vocab" data-word="emission">emission</span>, <span class="vocab" data-word="proton">proton</span> decay, and black-hole radiance—are <span class="vocab" data-word="enthusiastically">enthusiastically</span> believed by theorists but have not yet been observed. Just as seriously, there will undoubtedly be other physical processes we know nothing about that could dramatically alter the ideas presented here.</p>
+  <p>Finally, I should like to warn the reader that this book is necessarily highly <span class="vocab" data-word="speculative">speculative</span>. While most of the ideas to be presented are based on our best current understanding of science, <span class="vocab" data-word="futurology">futurology</span> cannot enjoy the same status as other scientific <span class="vocab" data-word="endeavor">endeavors</span>. Nevertheless, the <span class="vocab" data-word="temptation">temptation</span> to <span class="vocab" data-word="speculate">speculate</span> about the ultimate <span class="vocab" data-word="destiny">destiny</span> of the cosmos is <span class="vocab" data-word="irresistible">irresistible</span>. It is in this spirit of open-minded <span class="vocab" data-word="inquiry">inquiry</span> that I have written this book. The basic scenario of a universe originating in a big bang, then expanding and cooling toward some final state of physical <span class="vocab" data-word="degeneration">degeneration</span>, or perhaps collapsing <span class="vocab" data-word="catastrophically">catastrophically</span>, is fairly well established scientifically. What is far less certain, however, are the dominant physical processes that may occur over the <span class="vocab" data-word="immense">immense</span> time scales involved. Astronomers have a clear idea of the general fate of ordinary stars, and are becoming increasingly confident that they understand the basic properties of <span class="vocab" data-word="neutron">neutron</span> stars and black holes; but if the universe <span class="vocab" data-word="endure">endures</span> for many trillions of years or more, there may be <span class="vocab" data-word="subtle">subtle</span> physical effects about which we can only <span class="vocab" data-word="conjecture">conjecture</span> that <span class="vocab" data-word="eventually">eventually</span> become very important.</p>
 
-<p>These uncertainties become even greater when we consider the possible effects of intelligent life in the universe. Here we enter the <span class="vocab" data-word="realm">realm</span> of science fiction; nevertheless, we cannot ignore the fact that living beings may, over the <span class="vocab" data-word="eon">eons</span>, significantly modify the behavior of physical systems on ever-larger scales. I decided to include the topic of life in the cosmos because for many readers the <span class="vocab" data-word="fascination">fascination</span> with the fate of the universe is <span class="vocab" data-word="intimately">intimately</span> <span class="vocab" data-word="bound up with">bound up with</span> their concern for the fate of human beings, or the remote descendants of human beings. We should remember, though, that scientists have no real understanding of the nature of human <span class="vocab" data-word="consciousness">consciousness</span>, nor of the physical requirements that may permit <span class="vocab" data-word="conscious">conscious</span> activity to continue in the far future of the universe.</p>
+  <p>When faced with the problem of our incomplete understanding of nature, all we can do to try and <span class="vocab" data-word="deduce">deduce</span> the ultimate fate of the universe is to <span class="vocab" data-word="employ">employ</span> our best existing theories and <span class="vocab" data-word="extrapolate">extrapolate</span> them to their logical conclusions. The problem is that many of the theories having an important <span class="vocab" data-word="bearing">bearing</span> on the fate of the universe remain to be tested experimentally. Some of the processes I discuss—for example, gravitational-wave <span class="vocab" data-word="emission">emission</span>, <span class="vocab" data-word="proton">proton</span> decay, and black-hole radiance—are <span class="vocab" data-word="enthusiastically">enthusiastically</span> believed by theorists but have not yet been observed. Just as seriously, there will undoubtedly be other physical processes we know nothing about that could dramatically alter the ideas presented here.</p>
+
+  <p>These uncertainties become even greater when we consider the possible effects of intelligent life in the universe. Here we enter the <span class="vocab" data-word="realm">realm</span> of science fiction; nevertheless, we cannot ignore the fact that living beings may, over the <span class="vocab" data-word="eon">eons</span>, significantly modify the behavior of physical systems on ever-larger scales. I decided to include the topic of life in the cosmos because for many readers the <span class="vocab" data-word="fascination">fascination</span> with the fate of the universe is <span class="vocab" data-word="intimately">intimately</span> <span class="vocab" data-word="bound up with">bound up with</span> their concern for the fate of human beings, or the remote descendants of human beings. We should remember, though, that scientists have no real understanding of the nature of human <span class="vocab" data-word="consciousness">consciousness</span>, nor of the physical requirements that may permit <span class="vocab" data-word="conscious">conscious</span> activity to continue in the far future of the universe.</p>
+
+  <p class="acknowledgements">I should like to thank John Barrow, Frank Tipler, Jason Twamley, Roger Penrose, and Duncan Steel for helpful discussions about the subject matter of this book; the series editor, Jerry Lyons, for his critical reading of the manuscript; and Sara Lippincott, for her excellent work on the final manuscript.</p>
 
 </div>
 
@@ -241,12 +248,7 @@
 <div id="overlay">
   <div id="card">
     <div id="card-word"></div>
-    <div id="card-phonetic">
-      <span id="card-phonetic-text"></span>
-      <button id="speak-btn" title="朗读">
-        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-      </button>
-    </div>
+    <div id="card-phonetic"></div>
     <div class="card-divider"></div>
     <div id="card-pos"></div>
     <div id="card-en"></div>
@@ -258,10 +260,10 @@
   </div>
 </div>
 
-<!-- Progress bar -->
 <div id="progress-bar">
   <div id="progress-track"><div id="progress-fill" style="width:0%"></div></div>
   <div id="progress-label">已掌握 0 / 77</div>
+  <a id="cards-link" href="001_Preface_Cards.html">词卡 →</a>
 </div>
 
 <script>
@@ -348,28 +350,34 @@ const VOCAB = {
 const TOTAL = Object.keys(VOCAB).length;
 const knownState = {};
 
-// Load saved state
 try {
-  const saved = localStorage.getItem('tlm_reading_known');
+  const saved = localStorage.getItem('tlm_preface_known');
   if (saved) Object.assign(knownState, JSON.parse(saved));
 } catch(e) {}
 
 function saveState() {
-  try { localStorage.setItem('tlm_reading_known', JSON.stringify(knownState)); } catch(e) {}
+  try { localStorage.setItem('tlm_preface_known', JSON.stringify(knownState)); } catch(e) {}
 }
 
 function updateProgress() {
-  const count = Object.values(knownState).filter(v => v).length;
-  const pct = (count / TOTAL * 100).toFixed(0);
-  document.getElementById('progress-fill').style.width = pct + '%';
+  const count = Object.values(knownState).filter(Boolean).length;
+  document.getElementById('progress-fill').style.width = (count / TOTAL * 100) + '%';
   document.getElementById('progress-label').textContent = `已掌握 ${count} / ${TOTAL}`;
 }
 
 function applyKnownStyles() {
   document.querySelectorAll('.vocab').forEach(el => {
-    const w = el.dataset.word;
-    el.classList.toggle('known', !!knownState[w]);
+    el.classList.toggle('known', !!knownState[el.dataset.word]);
   });
+}
+
+function speak(word) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(word);
+    utter.lang = 'en-US'; utter.rate = 0.85;
+    window.speechSynthesis.speak(utter);
+  }
 }
 
 let currentWord = null;
@@ -379,18 +387,12 @@ function openCard(word) {
   if (!data) return;
   currentWord = word;
   document.getElementById('card-word').textContent = word;
-  document.getElementById('card-phonetic-text').textContent = data.phonetic;
+  document.getElementById('card-phonetic').textContent = data.phonetic;
   document.getElementById('card-pos').textContent = data.pos;
   document.getElementById('card-en').textContent = data.en_def;
   document.getElementById('card-zh').textContent = data.zh_def;
-
-  const btnKnown = document.getElementById('btn-known');
-  btnKnown.textContent = knownState[word] ? '✓ 已掌握（取消）' : '✓ 标为已掌握';
-  btnKnown.style.background = knownState[word] ? 'var(--known-bg)' : '';
-
+  document.getElementById('btn-known').textContent = knownState[word] ? '✓ 已掌握（取消）' : '✓ 标为已掌握';
   document.getElementById('overlay').classList.add('visible');
-
-  // Auto-speak
   speak(word);
 }
 
@@ -399,42 +401,28 @@ function closeCard() {
   currentWord = null;
 }
 
-function speak(word) {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(word);
-    utter.lang = 'en-US';
-    utter.rate = 0.85;
-    window.speechSynthesis.speak(utter);
-  }
-}
-
-// Attach click to all vocab spans
 document.querySelectorAll('.vocab').forEach(el => {
   el.addEventListener('click', () => openCard(el.dataset.word));
-});
-
-document.getElementById('speak-btn').addEventListener('click', (e) => {
-  e.stopPropagation();
-  if (currentWord) speak(currentWord);
 });
 
 document.getElementById('btn-known').addEventListener('click', () => {
   if (!currentWord) return;
   knownState[currentWord] = !knownState[currentWord];
-  saveState();
-  applyKnownStyles();
-  updateProgress();
-  closeCard();
+  saveState(); applyKnownStyles(); updateProgress(); closeCard();
 });
 
 document.getElementById('btn-close').addEventListener('click', closeCard);
-
-document.getElementById('overlay').addEventListener('click', (e) => {
+document.getElementById('overlay').addEventListener('click', e => {
   if (e.target === document.getElementById('overlay')) closeCard();
 });
 
-// Init
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && document.getElementById('overlay').classList.contains('visible')) {
+    e.preventDefault();
+    closeCard();
+  }
+});
+
 applyKnownStyles();
 updateProgress();
 </script>
