@@ -174,9 +174,10 @@
   }
   #modal-phonetic { font-size: 14px; color: var(--accent-light); font-style: italic; margin-bottom: 20px; }
   .modal-divider { height: 1px; background: var(--border); margin: 0 -28px 16px; }
-  #modal-pos { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 7px; }
-  #modal-en { font-size: 15px; color: var(--text-mid); font-style: italic; line-height: 1.6; margin-bottom: 12px; }
-  #modal-zh { font-size: 28px; color: var(--text); font-weight: 300; line-height: 1.3; margin-bottom: 24px; }
+  #modal-pos { font-size: 28px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; }
+  #modal-en { font-size: 28px; color: var(--text-mid); font-style: italic; line-height: 1.6; margin-bottom: 12px; }
+  #modal-zh { font-size: 28px; color: var(--text); font-weight: 300; line-height: 1.3; margin-bottom: 6px; }
+  #modal-synonyms { font-size: 28px; color: var(--text-muted); font-style: italic; margin-bottom: 22px; }
 
   #modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
   .action-btn {
@@ -226,6 +227,7 @@
     <div id="modal-pos"></div>
     <div id="modal-en"></div>
     <div id="modal-zh"></div>
+    <div id="modal-synonyms"></div>
     <div id="modal-actions">
       <button class="action-btn" id="btn-known">✓ 已掌握</button>
       <button class="action-btn" id="btn-unknown">✗ 待复习</button>
@@ -236,83 +238,83 @@
 
 <script>
 const WORDS = [
-  {"word":"intense","phonetic":"/ɪnˈtens/","pos":"adj.","en_def":"extremely strong or serious","zh_def":"强烈的"},
-  {"word":"convincing","phonetic":"/kənˈvɪnsɪŋ/","pos":"adj.","en_def":"capable of causing someone to believe something is true","zh_def":"令人信服的"},
-  {"word":"scenario","phonetic":"/səˈnɑːrioʊ/","pos":"n.","en_def":"a description of a possible sequence of events; a theory or model","zh_def":"假说，设想"},
-  {"word":"quarter","phonetic":"/ˈkwɔːrtər/","pos":"n.","en_def":"a particular group of people or area of activity","zh_def":"某些方面，某些人士"},
-  {"word":"radiation","phonetic":"/ˌreɪdiˈeɪʃən/","pos":"n.","en_def":"energy emitted in the form of waves or particles","zh_def":"辐射"},
-  {"word":"feverishly","phonetic":"/ˈfiːvərɪʃli/","pos":"adv.","en_def":"in a way that is fast and excited, often due to great urgency","zh_def":"狂热地，紧张地"},
-  {"word":"implication","phonetic":"/ˌɪmplɪˈkeɪʃən/","pos":"n.","en_def":"a possible consequence or result of something","zh_def":"含义，影响"},
-  {"word":"primeval","phonetic":"/praɪˈmiːvəl/","pos":"adj.","en_def":"relating to the earliest period of existence","zh_def":"原始的，太古的"},
-  {"word":"inferno","phonetic":"/ɪnˈfɜːrnoʊ/","pos":"n.","en_def":"a large, uncontrollable, and extremely hot fire","zh_def":"熊熊大火，火海"},
-  {"word":"relic","phonetic":"/ˈrelɪk/","pos":"n.","en_def":"something that has survived from an earlier time","zh_def":"遗迹，残留物"},
-  {"word":"imprint","phonetic":"/ˈɪmprɪnt/","pos":"n.","en_def":"a lasting mark or effect left by something","zh_def":"印记，痕迹"},
-  {"word":"prevail","phonetic":"/prɪˈveɪl/","pos":"v.","en_def":"to exist or be widespread at a particular time","zh_def":"盛行，存在"},
-  {"word":"lecture","phonetic":"/ˈlektʃər/","pos":"n.","en_def":"a talk given to an audience on a particular subject","zh_def":"讲座，演讲"},
-  {"word":"theoretician","phonetic":"/ˌθɪərəˈtɪʃən/","pos":"n.","en_def":"a person who develops or studies the theory of a subject","zh_def":"理论家"},
-  {"word":"give an account of","phonetic":"—","pos":"phr.","en_def":"to describe or explain something","zh_def":"描述，阐述"},
-  {"word":"relate","phonetic":"/rɪˈleɪt/","pos":"v.","en_def":"to say or report something","zh_def":"讲述，叙述"},
-  {"word":"uproariously","phonetic":"/ʌpˈrɔːriəsli/","pos":"adv.","en_def":"in a very loud and boisterous way","zh_def":"哄堂大笑地"},
-  {"word":"archbishop","phonetic":"/ˌɑːrtʃˈbɪʃəp/","pos":"n.","en_def":"a bishop of the highest rank","zh_def":"大主教"},
-  {"word":"minutiae","phonetic":"/mɪˈnjuːʃiː/","pos":"n.","en_def":"small and precise details","zh_def":"细节，琐事"},
-  {"word":"biblical","phonetic":"/ˈbɪblɪkəl/","pos":"adj.","en_def":"relating to or contained in the Bible","zh_def":"圣经的"},
-  {"word":"chronology","phonetic":"/krəˈnɒlədʒi/","pos":"n.","en_def":"the arrangement of events in the order in which they occurred","zh_def":"年代学，年表"},
-  {"word":"temerity","phonetic":"/təˈmerɪti/","pos":"n.","en_def":"excessive confidence or boldness","zh_def":"鲁莽，大胆"},
-  {"word":"catalog","phonetic":"/ˈkætəlɒɡ/","pos":"v.","en_def":"to record or list something systematically","zh_def":"逐一列举，记录"},
-  {"word":"such is the pace","phonetic":"—","pos":"phr.","en_def":"used to emphasize how fast something is progressing","zh_def":"如此之快的速度"},
-  {"word":"fare","phonetic":"/fer/","pos":"n.","en_def":"material offered to the public; a range of things available","zh_def":"内容，素材"},
-  {"word":"aptly","phonetic":"/ˈæptli/","pos":"adv.","en_def":"in a way that is appropriate or suitable","zh_def":"恰当地，贴切地"},
-  {"word":"mere","phonetic":"/mɪər/","pos":"adj.","en_def":"used to emphasize how small or insignificant something is","zh_def":"仅仅的，不过是"},
-  {"word":"catch up","phonetic":"/kætʃ ʌp/","pos":"phr.v.","en_def":"to reach the same level or standard as others","zh_def":"赶上，跟上"},
-  {"word":"heady","phonetic":"/ˈhedi/","pos":"adj.","en_def":"having a strong or exciting effect","zh_def":"令人兴奋的，刺激的"},
-  {"word":"infinitesimal","phonetic":"/ˌɪnfɪnɪˈtesɪməl/","pos":"adj.","en_def":"extremely small","zh_def":"极微小的"},
-  {"word":"confidently","phonetic":"/ˈkɒnfɪdəntli/","pos":"adv.","en_def":"in a way that shows certainty and self-assurance","zh_def":"自信地"},
-  {"word":"laughter","phonetic":"/ˈlæftər/","pos":"n.","en_def":"the act or sound of laughing","zh_def":"笑，笑声"},
-  {"word":"hollow","phonetic":"/ˈhɒloʊ/","pos":"adj.","en_def":"without real meaning or sincerity","zh_def":"空洞的，无意义的"},
-  {"word":"whimper","phonetic":"/ˈwɪmpər/","pos":"n.","en_def":"a weak or feeble sound or ending","zh_def":"无声无息的结束"},
-  {"word":"descendant","phonetic":"/dɪˈsendənt/","pos":"n.","en_def":"a person or thing that comes from an earlier form or person","zh_def":"后代，后裔"},
-  {"word":"eternity","phonetic":"/ɪˈtɜːrnɪti/","pos":"n.","en_def":"infinite or unending time","zh_def":"永恒，永远"},
-  {"word":"Armageddon","phonetic":"/ˌɑːrməˈɡedən/","pos":"n.","en_def":"a dramatic and catastrophic conflict; the end of the world","zh_def":"世界末日，大决战"},
-  {"word":"beset","phonetic":"/bɪˈset/","pos":"v.","en_def":"to trouble or threaten persistently","zh_def":"困扰，围困"},
-  {"word":"reflect","phonetic":"/rɪˈflekt/","pos":"v.","en_def":"to think carefully and deeply about something","zh_def":"深思，反思"},
-  {"word":"apocalyptic","phonetic":"/əˌpɒkəˈlɪptɪk/","pos":"adj.","en_def":"describing or suggesting widespread disaster or the end of the world","zh_def":"世界末日的，灾难性的"},
-  {"word":"unprecedented","phonetic":"/ʌnˈpresɪdentɪd/","pos":"adj.","en_def":"never having happened or existed before","zh_def":"前所未有的"},
-  {"word":"cease","phonetic":"/siːs/","pos":"v.","en_def":"to come to an end; to stop","zh_def":"停止，终止"},
-  {"word":"intend","phonetic":"/ɪnˈtend/","pos":"v.","en_def":"to have a particular purpose or plan","zh_def":"意图，打算"},
-  {"word":"prior","phonetic":"/ˈpraɪər/","pos":"adj.","en_def":"existing or coming before in time","zh_def":"事先的，预先的"},
-  {"word":"notation","phonetic":"/noʊˈteɪʃən/","pos":"n.","en_def":"a system of symbols used to represent information","zh_def":"符号系统，记号法"},
-  {"word":"cumbersome","phonetic":"/ˈkʌmbərsəm/","pos":"adj.","en_def":"large, heavy, or difficult to manage","zh_def":"笨重的，繁琐的"},
-  {"word":"camouflage","phonetic":"/ˈkæməflɑːʒ/","pos":"v.","en_def":"to hide or disguise something","zh_def":"掩盖，掩饰"},
-  {"word":"speculative","phonetic":"/ˈspekjələtɪv/","pos":"adj.","en_def":"based on guessing or uncertain information rather than known facts","zh_def":"推测性的，猜测的"},
-  {"word":"futurology","phonetic":"/ˌfjuːtʃəˈrɒlədʒi/","pos":"n.","en_def":"the study or prediction of future events based on current trends","zh_def":"未来学"},
-  {"word":"endeavor","phonetic":"/ɪnˈdevər/","pos":"n.","en_def":"a serious attempt or effort to do something","zh_def":"努力，事业"},
-  {"word":"temptation","phonetic":"/temˈteɪʃən/","pos":"n.","en_def":"a strong desire to do something","zh_def":"诱惑，冲动"},
-  {"word":"speculate","phonetic":"/ˈspekjuleɪt/","pos":"v.","en_def":"to form opinions without firm evidence","zh_def":"推测，猜测"},
-  {"word":"destiny","phonetic":"/ˈdestɪni/","pos":"n.","en_def":"the events that will happen to someone or something in the future","zh_def":"命运，天数"},
-  {"word":"irresistible","phonetic":"/ˌɪrɪˈzɪstɪbəl/","pos":"adj.","en_def":"too strong or appealing to be resisted","zh_def":"不可抗拒的"},
-  {"word":"inquiry","phonetic":"/ɪnˈkwaɪəri/","pos":"n.","en_def":"an act of seeking information or asking questions","zh_def":"探究，探索"},
-  {"word":"degeneration","phonetic":"/dɪˌdʒenəˈreɪʃən/","pos":"n.","en_def":"the process of becoming worse or less functional over time","zh_def":"退化，衰退"},
-  {"word":"catastrophically","phonetic":"/ˌkætəˈstrɒfɪkli/","pos":"adv.","en_def":"in a way that causes sudden and widespread disaster","zh_def":"灾难性地"},
-  {"word":"immense","phonetic":"/ɪˈmens/","pos":"adj.","en_def":"extremely large or great","zh_def":"巨大的，广大的"},
-  {"word":"neutron","phonetic":"/ˈnjuːtrɒn/","pos":"n.","en_def":"a subatomic particle with no electric charge found in the nucleus of an atom","zh_def":"中子"},
-  {"word":"endure","phonetic":"/ɪnˈdjʊər/","pos":"v.","en_def":"to last or continue for a long time","zh_def":"持续，延续"},
-  {"word":"subtle","phonetic":"/ˈsʌtəl/","pos":"adj.","en_def":"not immediately obvious; difficult to detect","zh_def":"微妙的，不易察觉的"},
-  {"word":"conjecture","phonetic":"/kənˈdʒektʃər/","pos":"v.","en_def":"to form an opinion without sufficient evidence","zh_def":"推测，猜测"},
-  {"word":"eventually","phonetic":"/ɪˈventʃuəli/","pos":"adv.","en_def":"at some later time; in the end","zh_def":"最终，终究"},
-  {"word":"deduce","phonetic":"/dɪˈdjuːs/","pos":"v.","en_def":"to reach a conclusion by reasoning from evidence","zh_def":"推断，推论"},
-  {"word":"employ","phonetic":"/ɪmˈplɔɪ/","pos":"v.","en_def":"to make use of something","zh_def":"运用，使用"},
-  {"word":"extrapolate","phonetic":"/ɪkˈstræpəleɪt/","pos":"v.","en_def":"to extend known data or conclusions into an unknown area","zh_def":"推断，外推"},
-  {"word":"bearing","phonetic":"/ˈberɪŋ/","pos":"n.","en_def":"relevance or relation to something","zh_def":"关联，影响"},
-  {"word":"emission","phonetic":"/ɪˈmɪʃən/","pos":"n.","en_def":"the production and discharge of something, especially radiation","zh_def":"发射，辐射"},
-  {"word":"proton","phonetic":"/ˈproʊtɒn/","pos":"n.","en_def":"a subatomic particle with a positive electric charge found in the nucleus of an atom","zh_def":"质子"},
-  {"word":"enthusiastically","phonetic":"/ɪnˌθjuːziˈæstɪkli/","pos":"adv.","en_def":"in a way that shows great excitement or eagerness","zh_def":"热情地，热切地"},
-  {"word":"realm","phonetic":"/relm/","pos":"n.","en_def":"an area or domain of activity or knowledge","zh_def":"领域，范畴"},
-  {"word":"eon","phonetic":"/ˈiːɒn/","pos":"n.","en_def":"an indefinitely long period of time","zh_def":"极长的时期，亿万年"},
-  {"word":"fascination","phonetic":"/ˌfæsɪˈneɪʃən/","pos":"n.","en_def":"the state of being intensely interested in or attracted to something","zh_def":"着迷，强烈的兴趣"},
-  {"word":"intimately","phonetic":"/ˈɪntɪmətli/","pos":"adv.","en_def":"in a way that is closely connected or associated","zh_def":"密切地，紧密地"},
-  {"word":"bound up with","phonetic":"/baʊnd ʌp wɪð/","pos":"phr.","en_def":"closely connected or associated with something","zh_def":"与……密切相关"},
-  {"word":"consciousness","phonetic":"/ˈkɒnʃəsnəs/","pos":"n.","en_def":"the state of being aware of one's own existence and surroundings","zh_def":"意识，知觉"},
-  {"word":"conscious","phonetic":"/ˈkɒnʃəs/","pos":"adj.","en_def":"aware of and able to think and perceive","zh_def":"有意识的，有知觉的"}
+  {"word":"intense","phonetic":"/ɪnˈtens/","pos":"adj.","en_def":"extremely strong or serious","zh_def":"强烈的","synonyms":"strong, fierce, extreme"},
+  {"word":"convincing","phonetic":"/kənˈvɪnsɪŋ/","pos":"adj.","en_def":"capable of causing someone to believe something is true","zh_def":"令人信服的","synonyms":"persuasive, compelling, credible"},
+  {"word":"scenario","phonetic":"/səˈnɑːrioʊ/","pos":"n.","en_def":"a description of a possible sequence of events; a theory or model","zh_def":"假说，设想","synonyms":"hypothesis, model, framework"},
+  {"word":"quarter","phonetic":"/ˈkwɔːrtər/","pos":"n.","en_def":"a particular group of people or area of activity","zh_def":"某些方面，某些人士","synonyms":"circles, corners, camps"},
+  {"word":"radiation","phonetic":"/ˌreɪdiˈeɪʃən/","pos":"n.","en_def":"energy emitted in the form of waves or particles","zh_def":"辐射","synonyms":"emission, rays, energy"},
+  {"word":"feverishly","phonetic":"/ˈfiːvərɪʃli/","pos":"adv.","en_def":"in a way that is fast and excited, often due to great urgency","zh_def":"狂热地，紧张地","synonyms":"frantically, urgently, intensely"},
+  {"word":"implication","phonetic":"/ˌɪmplɪˈkeɪʃən/","pos":"n.","en_def":"a possible consequence or result of something","zh_def":"含义，影响","synonyms":"consequence, ramification, significance"},
+  {"word":"primeval","phonetic":"/praɪˈmiːvəl/","pos":"adj.","en_def":"relating to the earliest period of existence","zh_def":"原始的，太古的","synonyms":"ancient, prehistoric, primal"},
+  {"word":"inferno","phonetic":"/ɪnˈfɜːrnoʊ/","pos":"n.","en_def":"a large, uncontrollable, and extremely hot fire","zh_def":"熊熊大火，火海","synonyms":"blaze, conflagration, furnace"},
+  {"word":"relic","phonetic":"/ˈrelɪk/","pos":"n.","en_def":"something that has survived from an earlier time","zh_def":"遗迹，残留物","synonyms":"remnant, vestige, artifact"},
+  {"word":"imprint","phonetic":"/ˈɪmprɪnt/","pos":"n.","en_def":"a lasting mark or effect left by something","zh_def":"印记，痕迹","synonyms":"mark, trace, impression"},
+  {"word":"prevail","phonetic":"/prɪˈveɪl/","pos":"v.","en_def":"to exist or be widespread at a particular time","zh_def":"盛行，存在","synonyms":"persist, dominate, reign"},
+  {"word":"lecture","phonetic":"/ˈlektʃər/","pos":"n.","en_def":"a talk given to an audience on a particular subject","zh_def":"讲座，演讲","synonyms":"talk, address, presentation"},
+  {"word":"theoretician","phonetic":"/ˌθɪərəˈtɪʃən/","pos":"n.","en_def":"a person who develops or studies the theory of a subject","zh_def":"理论家","synonyms":"theorist, academic, scholar"},
+  {"word":"give an account of","phonetic":"—","pos":"phr.","en_def":"to describe or explain something","zh_def":"描述，阐述","synonyms":"describe, explain, set out"},
+  {"word":"relate","phonetic":"/rɪˈleɪt/","pos":"v.","en_def":"to say or report something","zh_def":"讲述，叙述","synonyms":"recount, narrate, report"},
+  {"word":"uproariously","phonetic":"/ʌpˈrɔːriəsli/","pos":"adv.","en_def":"in a very loud and boisterous way","zh_def":"哄堂大笑地","synonyms":"loudly, raucously, boisterously"},
+  {"word":"archbishop","phonetic":"/ˌɑːrtʃˈbɪʃəp/","pos":"n.","en_def":"a bishop of the highest rank","zh_def":"大主教","synonyms":"prelate, primate, clergyman"},
+  {"word":"minutiae","phonetic":"/mɪˈnjuːʃiː/","pos":"n.","en_def":"small and precise details","zh_def":"细节，琐事","synonyms":"details, particulars, fine points"},
+  {"word":"biblical","phonetic":"/ˈbɪblɪkəl/","pos":"adj.","en_def":"relating to or contained in the Bible","zh_def":"圣经的","synonyms":"scriptural, sacred, holy"},
+  {"word":"chronology","phonetic":"/krəˈnɒlədʒi/","pos":"n.","en_def":"the arrangement of events in the order in which they occurred","zh_def":"年代学，年表","synonyms":"timeline, sequence, calendar"},
+  {"word":"temerity","phonetic":"/təˈmerɪti/","pos":"n.","en_def":"excessive confidence or boldness","zh_def":"鲁莽，大胆","synonyms":"audacity, nerve, boldness"},
+  {"word":"catalog","phonetic":"/ˈkætəlɒɡ/","pos":"v.","en_def":"to record or list something systematically","zh_def":"逐一列举，记录","synonyms":"list, enumerate, document"},
+  {"word":"such is the pace","phonetic":"—","pos":"phr.","en_def":"used to emphasize how fast something is progressing","zh_def":"如此之快的速度","synonyms":"so rapid is the advance, so swift the progress"},
+  {"word":"fare","phonetic":"/fer/","pos":"n.","en_def":"material offered to the public; a range of things available","zh_def":"内容，素材","synonyms":"material, content, staple"},
+  {"word":"aptly","phonetic":"/ˈæptli/","pos":"adv.","en_def":"in a way that is appropriate or suitable","zh_def":"恰当地，贴切地","synonyms":"fittingly, appropriately, suitably"},
+  {"word":"mere","phonetic":"/mɪər/","pos":"adj.","en_def":"used to emphasize how small or insignificant something is","zh_def":"仅仅的，不过是","synonyms":"only, just, no more than"},
+  {"word":"catch up","phonetic":"/kætʃ ʌp/","pos":"phr.v.","en_def":"to reach the same level or standard as others","zh_def":"赶上，跟上","synonyms":"keep pace, close the gap, come abreast"},
+  {"word":"heady","phonetic":"/ˈhedi/","pos":"adj.","en_def":"having a strong or exciting effect","zh_def":"令人兴奋的，刺激的","synonyms":"exhilarating, thrilling, intoxicating"},
+  {"word":"infinitesimal","phonetic":"/ˌɪnfɪnɪˈtesɪməl/","pos":"adj.","en_def":"extremely small","zh_def":"极微小的","synonyms":"minute, negligible, microscopic"},
+  {"word":"confidently","phonetic":"/ˈkɒnfɪdəntli/","pos":"adv.","en_def":"in a way that shows certainty and self-assurance","zh_def":"自信地","synonyms":"assuredly, boldly, decisively"},
+  {"word":"laughter","phonetic":"/ˈlæftər/","pos":"n.","en_def":"the act or sound of laughing","zh_def":"笑，笑声","synonyms":"chuckling, giggling, mirth"},
+  {"word":"hollow","phonetic":"/ˈhɒloʊ/","pos":"adj.","en_def":"without real meaning or sincerity","zh_def":"空洞的，无意义的","synonyms":"empty, meaningless, vacuous"},
+  {"word":"whimper","phonetic":"/ˈwɪmpər/","pos":"n.","en_def":"a weak or feeble sound or ending","zh_def":"无声无息的结束","synonyms":"murmur, whine, feeble end"},
+  {"word":"descendant","phonetic":"/dɪˈsendənt/","pos":"n.","en_def":"a person or thing that comes from an earlier form or person","zh_def":"后代，后裔","synonyms":"offspring, heir, successor"},
+  {"word":"eternity","phonetic":"/ɪˈtɜːrnɪti/","pos":"n.","en_def":"infinite or unending time","zh_def":"永恒，永远","synonyms":"infinity, perpetuity, forever"},
+  {"word":"Armageddon","phonetic":"/ˌɑːrməˈɡedən/","pos":"n.","en_def":"a dramatic and catastrophic conflict; the end of the world","zh_def":"世界末日，大决战","synonyms":"apocalypse, doomsday, catastrophe"},
+  {"word":"beset","phonetic":"/bɪˈset/","pos":"v.","en_def":"to trouble or threaten persistently","zh_def":"困扰，围困","synonyms":"plague, afflict, assail"},
+  {"word":"reflect","phonetic":"/rɪˈflekt/","pos":"v.","en_def":"to think carefully and deeply about something","zh_def":"深思，反思","synonyms":"ponder, contemplate, meditate"},
+  {"word":"apocalyptic","phonetic":"/əˌpɒkəˈlɪptɪk/","pos":"adj.","en_def":"describing or suggesting widespread disaster or the end of the world","zh_def":"世界末日的，灾难性的","synonyms":"catastrophic, cataclysmic, doomsday"},
+  {"word":"unprecedented","phonetic":"/ʌnˈpresɪdentɪd/","pos":"adj.","en_def":"never having happened or existed before","zh_def":"前所未有的","synonyms":"unparalleled, unheard-of, novel"},
+  {"word":"cease","phonetic":"/siːs/","pos":"v.","en_def":"to come to an end; to stop","zh_def":"停止，终止","synonyms":"stop, halt, end"},
+  {"word":"intend","phonetic":"/ɪnˈtend/","pos":"v.","en_def":"to have a particular purpose or plan","zh_def":"意图，打算","synonyms":"aim, plan, mean"},
+  {"word":"prior","phonetic":"/ˈpraɪər/","pos":"adj.","en_def":"existing or coming before in time","zh_def":"事先的，预先的","synonyms":"previous, earlier, preceding"},
+  {"word":"notation","phonetic":"/noʊˈteɪʃən/","pos":"n.","en_def":"a system of symbols used to represent information","zh_def":"符号系统，记号法","synonyms":"symbols, system, code"},
+  {"word":"cumbersome","phonetic":"/ˈkʌmbərsəm/","pos":"adj.","en_def":"large, heavy, or difficult to manage","zh_def":"笨重的，繁琐的","synonyms":"unwieldy, awkward, bulky"},
+  {"word":"camouflage","phonetic":"/ˈkæməflɑːʒ/","pos":"v.","en_def":"to hide or disguise something","zh_def":"掩盖，掩饰","synonyms":"conceal, disguise, obscure"},
+  {"word":"speculative","phonetic":"/ˈspekjələtɪv/","pos":"adj.","en_def":"based on guessing or uncertain information rather than known facts","zh_def":"推测性的，猜测的","synonyms":"conjectural, theoretical, hypothetical"},
+  {"word":"futurology","phonetic":"/ˌfjuːtʃəˈrɒlədʒi/","pos":"n.","en_def":"the study or prediction of future events based on current trends","zh_def":"未来学","synonyms":"forecasting, prognostication, foresight"},
+  {"word":"endeavor","phonetic":"/ɪnˈdevər/","pos":"n.","en_def":"a serious attempt or effort to do something","zh_def":"努力，事业","synonyms":"effort, attempt, enterprise"},
+  {"word":"temptation","phonetic":"/temˈteɪʃən/","pos":"n.","en_def":"a strong desire to do something","zh_def":"诱惑，冲动","synonyms":"urge, impulse, allure"},
+  {"word":"speculate","phonetic":"/ˈspekjuleɪt/","pos":"v.","en_def":"to form opinions without firm evidence","zh_def":"推测，猜测","synonyms":"conjecture, theorize, hypothesize"},
+  {"word":"destiny","phonetic":"/ˈdestɪni/","pos":"n.","en_def":"the events that will happen to someone or something in the future","zh_def":"命运，天数","synonyms":"fate, fortune, lot"},
+  {"word":"irresistible","phonetic":"/ˌɪrɪˈzɪstɪbəl/","pos":"adj.","en_def":"too strong or appealing to be resisted","zh_def":"不可抗拒的","synonyms":"overwhelming, compelling, overpowering"},
+  {"word":"inquiry","phonetic":"/ɪnˈkwaɪəri/","pos":"n.","en_def":"an act of seeking information or asking questions","zh_def":"探究，探索","synonyms":"investigation, exploration, questioning"},
+  {"word":"degeneration","phonetic":"/dɪˌdʒenəˈreɪʃən/","pos":"n.","en_def":"the process of becoming worse or less functional over time","zh_def":"退化，衰退","synonyms":"decline, deterioration, decay"},
+  {"word":"catastrophically","phonetic":"/ˌkætəˈstrɒfɪkli/","pos":"adv.","en_def":"in a way that causes sudden and widespread disaster","zh_def":"灾难性地","synonyms":"disastrously, devastatingly, ruinously"},
+  {"word":"immense","phonetic":"/ɪˈmens/","pos":"adj.","en_def":"extremely large or great","zh_def":"巨大的，广大的","synonyms":"vast, enormous, colossal"},
+  {"word":"neutron","phonetic":"/ˈnjuːtrɒn/","pos":"n.","en_def":"a subatomic particle with no electric charge found in the nucleus of an atom","zh_def":"中子","synonyms":"—"},
+  {"word":"endure","phonetic":"/ɪnˈdjʊər/","pos":"v.","en_def":"to last or continue for a long time","zh_def":"持续，延续","synonyms":"persist, last, survive"},
+  {"word":"subtle","phonetic":"/ˈsʌtəl/","pos":"adj.","en_def":"not immediately obvious; difficult to detect","zh_def":"微妙的，不易察觉的","synonyms":"delicate, elusive, understated"},
+  {"word":"conjecture","phonetic":"/kənˈdʒektʃər/","pos":"v.","en_def":"to form an opinion without sufficient evidence","zh_def":"推测，猜测","synonyms":"speculate, surmise, guess"},
+  {"word":"eventually","phonetic":"/ɪˈventʃuəli/","pos":"adv.","en_def":"at some later time; in the end","zh_def":"最终，终究","synonyms":"ultimately, finally, in time"},
+  {"word":"deduce","phonetic":"/dɪˈdjuːs/","pos":"v.","en_def":"to reach a conclusion by reasoning from evidence","zh_def":"推断，推论","synonyms":"infer, conclude, reason"},
+  {"word":"employ","phonetic":"/ɪmˈplɔɪ/","pos":"v.","en_def":"to make use of something","zh_def":"运用，使用","synonyms":"use, apply, utilize"},
+  {"word":"extrapolate","phonetic":"/ɪkˈstræpəleɪt/","pos":"v.","en_def":"to extend known data or conclusions into an unknown area","zh_def":"推断，外推","synonyms":"project, extend, infer"},
+  {"word":"bearing","phonetic":"/ˈberɪŋ/","pos":"n.","en_def":"relevance or relation to something","zh_def":"关联，影响","synonyms":"relevance, connection, significance"},
+  {"word":"emission","phonetic":"/ɪˈmɪʃən/","pos":"n.","en_def":"the production and discharge of something, especially radiation","zh_def":"发射，辐射","synonyms":"discharge, release, output"},
+  {"word":"proton","phonetic":"/ˈproʊtɒn/","pos":"n.","en_def":"a subatomic particle with a positive electric charge found in the nucleus of an atom","zh_def":"质子","synonyms":"—"},
+  {"word":"enthusiastically","phonetic":"/ɪnˌθjuːziˈæstɪkli/","pos":"adv.","en_def":"in a way that shows great excitement or eagerness","zh_def":"热情地，热切地","synonyms":"eagerly, keenly, passionately"},
+  {"word":"realm","phonetic":"/relm/","pos":"n.","en_def":"an area or domain of activity or knowledge","zh_def":"领域，范畴","synonyms":"domain, sphere, field"},
+  {"word":"eon","phonetic":"/ˈiːɒn/","pos":"n.","en_def":"an indefinitely long period of time","zh_def":"极长的时期，亿万年","synonyms":"age, epoch, era"},
+  {"word":"fascination","phonetic":"/ˌfæsɪˈneɪʃən/","pos":"n.","en_def":"the state of being intensely interested in or attracted to something","zh_def":"着迷，强烈的兴趣","synonyms":"captivation, obsession, allure"},
+  {"word":"intimately","phonetic":"/ˈɪntɪmətli/","pos":"adv.","en_def":"in a way that is closely connected or associated","zh_def":"密切地，紧密地","synonyms":"closely, deeply, inextricably"},
+  {"word":"bound up with","phonetic":"/baʊnd ʌp wɪð/","pos":"phr.","en_def":"closely connected or associated with something","zh_def":"与……密切相关","synonyms":"tied to, linked with, connected to"},
+  {"word":"consciousness","phonetic":"/ˈkɒnʃəsnəs/","pos":"n.","en_def":"the state of being aware of one's own existence and surroundings","zh_def":"意识，知觉","synonyms":"awareness, sentience, perception"},
+  {"word":"conscious","phonetic":"/ˈkɒnʃəs/","pos":"adj.","en_def":"aware of and able to think and perceive","zh_def":"有意识的，有知觉的","synonyms":"aware, sentient, cognizant"}
 ];
 
 // ── State ──
@@ -390,6 +392,7 @@ function openModal(w) {
   document.getElementById('modal-pos').textContent = w.pos;
   document.getElementById('modal-en').textContent = w.en_def;
   document.getElementById('modal-zh').textContent = w.zh_def;
+  document.getElementById('modal-synonyms').textContent = w.synonyms && w.synonyms !== '—' ? '≈ ' + w.synonyms : '';
   const s = state[w.word];
   document.getElementById('btn-known').textContent = s === 'known' ? '✓ 已掌握（取消）' : '✓ 已掌握';
   document.getElementById('btn-unknown').textContent = s === 'unknown' ? '✗ 待复习（取消）' : '✗ 待复习';

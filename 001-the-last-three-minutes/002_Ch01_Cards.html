@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>The Last Three Minutes — Ch.1 词卡</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap');
+
+  :root {
+    --bg: #f2ede6;
+    --paper: #fdfaf6;
+    --card-bg: #faf7f2;
+    --card-known: #f0f5ef;
+    --card-unknown: #faf0f0;
+    --text: #2c2416;
+    --text-mid: #6b5d4e;
+    --text-muted: #a8967e;
+    --accent: #7a4f2e;
+    --accent-light: #c4956a;
+    --border: #e2d8cc;
+    --border-dark: #c8b89e;
+    --border-known: #a8d4a0;
+    --border-unknown: #d4a8a8;
+    --known-color: #4a7a44;
+    --unknown-color: #7a4444;
+    --known-bg: #eef5ec;
+    --shadow: rgba(60, 35, 10, 0.08);
+    --overlay-bg: rgba(42, 36, 32, 0.38);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Crimson Pro', 'Noto Serif SC', 'STSong', Georgia, serif;
+    min-height: 100%;
+  }
+
+  #header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 54px; background: var(--paper);
+    border-bottom: 1px solid var(--border-dark);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 14px; gap: 8px;
+  }
+  #header h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 13px; font-weight: 400; font-style: italic;
+    color: var(--accent); white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+    flex: 1; min-width: 0;
+  }
+  .hdr-btn {
+    padding: 5px 10px; border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent; font-family: inherit;
+    font-size: 11px; color: var(--text-mid);
+    cursor: pointer; white-space: nowrap;
+    transition: all 0.15s; -webkit-appearance: none; flex-shrink: 0;
+  }
+  .hdr-btn:active { background: var(--bg); border-color: var(--border-dark); }
+  .hdr-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  #filters {
+    position: fixed; top: 54px; left: 0; right: 0; z-index: 100;
+    height: 40px; background: var(--paper);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 6px; padding: 0 14px;
+  }
+  .filter-btn {
+    padding: 4px 12px; border-radius: 14px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--text-mid);
+    font-family: inherit; font-size: 11px;
+    cursor: pointer; transition: all 0.18s; -webkit-appearance: none;
+  }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+
+  #stats-row {
+    position: fixed; top: 94px; left: 0; right: 0; z-index: 99;
+    height: 30px; background: var(--bg);
+    display: flex; align-items: center;
+    padding: 0 16px; gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+  .stat-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .dot-known { background: var(--known-color); }
+  .dot-unknown { background: var(--unknown-color); }
+  .dot-fresh { background: var(--border-dark); }
+
+  #grid-container {
+    position: fixed; top: 124px; left: 0; right: 0; bottom: 0;
+    overflow-y: auto; overflow-x: hidden;
+    padding: 10px 10px 28px;
+    -webkit-overflow-scrolling: touch;
+  }
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 7px;
+  }
+
+  .card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 10px 10px;
+    cursor: pointer;
+    transition: transform 0.14s, border-color 0.18s, background 0.18s, opacity 0.18s;
+    min-height: 76px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative;
+    user-select: none; -webkit-user-select: none;
+    box-shadow: 0 1px 3px var(--shadow);
+  }
+  .card:active { transform: scale(0.95); }
+  .card.known { background: var(--card-known); border-color: var(--border-known); opacity: 0.62; }
+  .card.unknown { background: var(--card-unknown); border-color: var(--border-unknown); }
+
+  .card-word {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 15px; font-weight: 700;
+    color: var(--text); line-height: 1.2;
+  }
+  .card.known .card-word { color: var(--text-muted); font-weight: 400; }
+
+  .card-bottom { margin-top: 6px; }
+  .card-pos { font-size: 10px; color: var(--text-muted); font-style: italic; line-height: 1.3; }
+  .card-zh { font-size: 11px; color: var(--accent); line-height: 1.3; margin-top: 2px; }
+  .card.known .card-zh { color: var(--text-muted); }
+
+  body.word-only .card-bottom { display: none; }
+  body.word-only .card { min-height: 52px; justify-content: center; }
+
+  .card-status { position: absolute; top: 7px; right: 7px; width: 6px; height: 6px; border-radius: 50%; }
+  .card.known .card-status { background: var(--known-color); }
+  .card.unknown .card-status { background: var(--unknown-color); }
+
+  #overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: var(--overlay-bg);
+    display: flex; align-items: center; justify-content: center;
+    padding: 28px 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.22s ease;
+    backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+  }
+  #overlay.visible { opacity: 1; pointer-events: all; }
+
+  #modal {
+    background: var(--paper); border: 1px solid var(--border-dark);
+    border-radius: 20px; width: 100%; max-width: 460px;
+    padding: 32px 28px 24px;
+    box-shadow: 0 28px 72px var(--shadow);
+    transform: scale(0.92) translateY(14px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.5, 0.64, 1);
+  }
+  #overlay.visible #modal { transform: scale(1) translateY(0); }
+
+  #modal-word {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 38px; font-weight: 600;
+    color: var(--text); line-height: 1.1; margin-bottom: 4px;
+  }
+  #modal-phonetic { font-size: 14px; color: var(--accent-light); font-style: italic; margin-bottom: 20px; }
+  .modal-divider { height: 1px; background: var(--border); margin: 0 -28px 16px; }
+  #modal-pos { font-size: 28px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; }
+  #modal-en { font-size: 28px; color: var(--text-mid); font-style: italic; line-height: 1.6; margin-bottom: 10px; }
+  #modal-zh { font-size: 28px; color: var(--text); font-weight: 300; line-height: 1.3; margin-bottom: 6px; }
+  #modal-synonyms { font-size: 28px; color: var(--text-muted); font-style: italic; margin-bottom: 22px; }
+
+  #modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .action-btn {
+    padding: 11px; border-radius: 10px; border: 1px solid;
+    font-family: inherit; font-size: 13px; cursor: pointer;
+    transition: all 0.14s; -webkit-appearance: none;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+  }
+  .action-btn:active { transform: scale(0.97); }
+  #btn-known { background: var(--known-bg); border-color: var(--border-known); color: var(--known-color); }
+  #btn-unknown { background: #faf0f0; border-color: var(--border-unknown); color: var(--unknown-color); }
+  #btn-close { grid-column: 1 / -1; background: transparent; border-color: var(--border); color: var(--text-muted); font-size: 12px; }
+
+  #grid-container::-webkit-scrollbar { width: 3px; }
+  #grid-container::-webkit-scrollbar-track { background: transparent; }
+  #grid-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <h1>The Last Three Minutes — Ch.1 Doomsday</h1>
+  <button class="hdr-btn" id="btn-word-only">仅英文</button>
+  <button class="hdr-btn" id="btn-shuffle">随机排列</button>
+</div>
+
+<div id="filters">
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="unknown">待复习</button>
+  <button class="filter-btn" data-filter="known">已掌握</button>
+  <button class="filter-btn" data-filter="fresh">未标记</button>
+</div>
+
+<div id="stats-row">
+  <span class="stat-item"><span class="stat-dot dot-known"></span><span id="cnt-known">0</span> 已掌握</span>
+  <span class="stat-item"><span class="stat-dot dot-unknown"></span><span id="cnt-unknown">0</span> 待复习</span>
+  <span class="stat-item"><span class="stat-dot dot-fresh"></span><span id="cnt-fresh">0</span> 未标记</span>
+</div>
+
+<div id="grid-container"><div id="grid"></div></div>
+
+<div id="overlay">
+  <div id="modal">
+    <div id="modal-word"></div>
+    <div id="modal-phonetic"></div>
+    <div class="modal-divider"></div>
+    <div id="modal-pos"></div>
+    <div id="modal-en"></div>
+    <div id="modal-zh"></div>
+    <div id="modal-synonyms"></div>
+    <div id="modal-actions">
+      <button class="action-btn" id="btn-known">✓ 已掌握</button>
+      <button class="action-btn" id="btn-unknown">✗ 待复习</button>
+      <button class="action-btn" id="btn-close">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const WORDS = [
+  {"word":"despairing","phonetic":"/dɪˈspeərɪŋ/","pos":"adj.","en_def":"feeling or showing a complete loss of hope","zh_def":"绝望的","synonyms":"hopeless, desperate"},
+  {"word":"flee","phonetic":"/fliː/","pos":"v.","en_def":"to run away from danger or an unpleasant situation","zh_def":"逃离，逃跑","synonyms":"escape, run away"},
+  {"word":"disused","phonetic":"/ˌdɪsˈjuːzd/","pos":"adj.","en_def":"no longer being used","zh_def":"废弃的，不再使用的","synonyms":"abandoned, derelict"},
+  {"word":"shaft","phonetic":"/ʃɑːft/","pos":"n.","en_def":"a long, narrow, vertical passage in the ground","zh_def":"竖井，矿井","synonyms":"tunnel, pit"},
+  {"word":"rampage","phonetic":"/ˈræmpeɪdʒ/","pos":"n.","en_def":"a period of violent, uncontrolled behavior","zh_def":"横冲直撞，暴乱","synonyms":"riot, frenzy"},
+  {"word":"murderous","phonetic":"/ˈmɜːrdərəs/","pos":"adj.","en_def":"capable of or intending to commit murder; extremely dangerous","zh_def":"凶残的，杀气腾腾的","synonyms":"lethal, savage, ferocious"},
+  {"word":"uncaring","phonetic":"/ˌʌnˈkeərɪŋ/","pos":"adj.","en_def":"not showing concern for others","zh_def":"漠不关心的，冷酷的","synonyms":"indifferent, callous"},
+  {"word":"sullen","phonetic":"/ˈsʌlən/","pos":"adj.","en_def":"bad-tempered and silent; gloomy","zh_def":"闷闷不乐的，阴沉的","synonyms":"gloomy, morose, brooding"},
+  {"word":"bemused","phonetic":"/bɪˈmjuːzd/","pos":"adj.","en_def":"confused and unable to think clearly","zh_def":"茫然的，困惑的","synonyms":"bewildered, perplexed, dazed"},
+  {"word":"etch","phonetic":"/etʃ/","pos":"v.","en_def":"to fix permanently and clearly on a surface","zh_def":"刻画，铭刻","synonyms":"engrave, inscribe, imprint"},
+  {"word":"fabric","phonetic":"/ˈfæbrɪk/","pos":"n.","en_def":"the basic structure or nature of something","zh_def":"结构，本质","synonyms":"structure, framework, texture"},
+  {"word":"slender","phonetic":"/ˈslendər/","pos":"adj.","en_def":"thin and narrow","zh_def":"细长的，纤细的","synonyms":"thin, narrow, slight"},
+  {"word":"radiate","phonetic":"/ˈreɪdieɪt/","pos":"v.","en_def":"to spread outward from a central point","zh_def":"辐射，散射","synonyms":"emit, emanate, diffuse"},
+  {"word":"nebulosity","phonetic":"/ˌnebjuˈlɒsɪti/","pos":"n.","en_def":"a cloud-like mass of gas or dust in space","zh_def":"星云状物质，云雾状体","synonyms":"nebula, haze, cloud"},
+  {"word":"swell","phonetic":"/swel/","pos":"v.","en_def":"to increase greatly in size","zh_def":"膨胀，扩大","synonyms":"expand, enlarge, balloon"},
+  {"word":"maelstrom","phonetic":"/ˈmeɪlstrəm/","pos":"n.","en_def":"a situation of confused movement or violent forces","zh_def":"大漩涡，混乱局面","synonyms":"whirlpool, vortex, turmoil"},
+  {"word":"apex","phonetic":"/ˈeɪpeks/","pos":"n.","en_def":"the highest point of something","zh_def":"顶点，顶端","synonyms":"peak, summit, tip"},
+  {"word":"vapor","phonetic":"/ˈveɪpər/","pos":"n.","en_def":"a gas or mist formed from a liquid","zh_def":"蒸气，水汽","synonyms":"steam, mist, gas"},
+  {"word":"misshapen","phonetic":"/ˌmɪsˈʃeɪpən/","pos":"adj.","en_def":"having an unusual or irregular shape","zh_def":"形状不规则的，畸形的","synonyms":"deformed, distorted, irregular"},
+  {"word":"menacing","phonetic":"/ˈmenəsɪŋ/","pos":"adj.","en_def":"suggesting a threat; threatening","zh_def":"威胁性的，险恶的","synonyms":"threatening, ominous, sinister"},
+  {"word":"lump","phonetic":"/lʌmp/","pos":"n.","en_def":"a compact, irregularly shaped mass","zh_def":"块，团","synonyms":"chunk, mass, clump"},
+  {"word":"diminutive","phonetic":"/dɪˈmɪnjətɪv/","pos":"adj.","en_def":"extremely small","zh_def":"极小的，微小的","synonyms":"tiny, minute, miniature"},
+  {"word":"comet","phonetic":"/ˈkɒmɪt/","pos":"n.","en_def":"a celestial body with a bright head and a long tail that orbits the sun","zh_def":"彗星","synonyms":"asteroid, bolide"},
+  {"word":"belie","phonetic":"/bɪˈlaɪ/","pos":"v.","en_def":"to give a false impression of; to contradict","zh_def":"掩盖，与……不符","synonyms":"contradict, misrepresent, conceal"},
+  {"word":"destructive","phonetic":"/dɪˈstrʌktɪv/","pos":"adj.","en_def":"causing great damage or harm","zh_def":"破坏性的，毁灭性的","synonyms":"devastating, ruinous, catastrophic"},
+  {"word":"staggering","phonetic":"/ˈstæɡərɪŋ/","pos":"adj.","en_def":"extremely shocking or surprising","zh_def":"惊人的，令人震惊的","synonyms":"astonishing, astounding, overwhelming"},
+  {"word":"destine","phonetic":"/ˈdestɪn/","pos":"v.","en_def":"to be certain to happen in the future","zh_def":"注定，命中注定","synonyms":"doom, ordain, predetermine"},
+  {"word":"elaborate","phonetic":"/ɪˈlæbərət/","pos":"adj.","en_def":"involving many carefully arranged parts; detailed and complicated","zh_def":"精心设计的，复杂的","synonyms":"complex, intricate, detailed"},
+  {"word":"cataclysm","phonetic":"/ˈkætəklɪzəm/","pos":"n.","en_def":"a sudden violent event that causes great destruction","zh_def":"大灾难，剧变","synonyms":"catastrophe, disaster, calamity"},
+  {"word":"posterity","phonetic":"/pɒˈsterɪti/","pos":"n.","en_def":"future generations of people","zh_def":"后代，子孙后代","synonyms":"descendants, future generations, offspring"},
+  {"word":"searing","phonetic":"/ˈsɪərɪŋ/","pos":"adj.","en_def":"extremely hot; burning intensely","zh_def":"灼热的，炙热的","synonyms":"scorching, blazing, blistering"},
+  {"word":"lance","phonetic":"/lɑːns/","pos":"v.","en_def":"to pierce or cut through something sharply","zh_def":"刺穿，穿透","synonyms":"pierce, stab, penetrate"},
+  {"word":"shudder","phonetic":"/ˈʃʌdər/","pos":"v.","en_def":"to shake or vibrate suddenly and violently","zh_def":"震动，颤抖","synonyms":"tremble, quake, shiver"},
+  {"word":"pulverize","phonetic":"/ˈpʌlvəraɪz/","pos":"v.","en_def":"to crush something into fine powder or pieces","zh_def":"粉碎，碾碎","synonyms":"crush, grind, shatter"},
+  {"word":"crater","phonetic":"/ˈkreɪtər/","pos":"n.","en_def":"a large hole in the ground caused by an explosion or impact","zh_def":"撞击坑，火山口","synonyms":"pit, cavity, hollow"},
+  {"word":"molten","phonetic":"/ˈməʊltən/","pos":"adj.","en_def":"melted at very high temperatures","zh_def":"熔融的，熔化的","synonyms":"liquefied, melted, fused"},
+  {"word":"ripple","phonetic":"/ˈrɪpəl/","pos":"v.","en_def":"to spread outward in waves","zh_def":"波动，扩散","synonyms":"undulate, radiate, spread"},
+  {"word":"toss","phonetic":"/tɒs/","pos":"v.","en_def":"to throw or move something roughly","zh_def":"抛掷，颠簸","synonyms":"hurl, fling, pitch"},
+  {"word":"flick","phonetic":"/flɪk/","pos":"v.","en_def":"to move with a quick, light motion","zh_def":"轻弹，抖动","synonyms":"snap, flip, jerk"},
+  {"word":"vaporize","phonetic":"/ˈveɪpəraɪz/","pos":"v.","en_def":"to convert into vapor by extreme heat","zh_def":"气化，蒸发","synonyms":"evaporate, sublimate, gasify"},
+  {"word":"aloft","phonetic":"/əˈlɒft/","pos":"adv.","en_def":"up into the air; high above the ground","zh_def":"高空，向空中","synonyms":"skyward, upward, overhead"},
+  {"word":"fling","phonetic":"/flɪŋ/","pos":"v.","en_def":"to throw with great force","zh_def":"猛抛，抛出","synonyms":"hurl, launch, catapult"},
+  {"word":"pitch","phonetic":"/pɪtʃ/","pos":"v.","en_def":"to throw or hurl forcefully","zh_def":"投掷，抛出","synonyms":"hurl, fling, launch"},
+  {"word":"wreak","phonetic":"/riːk/","pos":"v.","en_def":"to cause great damage or harm","zh_def":"造成（破坏），施加","synonyms":"inflict, cause, bring about"},
+  {"word":"ejecta","phonetic":"/ɪˈdʒektə/","pos":"n.","en_def":"material thrown out by a volcanic eruption or impact","zh_def":"喷出物，溅射物","synonyms":"debris, fallout, expelled material"},
+  {"word":"tsunami","phonetic":"/suːˈnɑːmi/","pos":"n.","en_def":"a large ocean wave caused by an underwater earthquake or impact","zh_def":"海啸","synonyms":"tidal wave, surge"},
+  {"word":"turmoil","phonetic":"/ˈtɜːrmɔɪl/","pos":"n.","en_def":"a state of great confusion or disorder","zh_def":"混乱，动荡","synonyms":"chaos, upheaval, disorder"},
+  {"word":"dusty","phonetic":"/ˈdʌsti/","pos":"adj.","en_def":"covered with or full of dust","zh_def":"尘埃弥漫的","synonyms":"powdery, grimy, murky"},
+  {"word":"blot","phonetic":"/blɒt/","pos":"v.","en_def":"to cover or obscure completely","zh_def":"遮蔽，遮挡","synonyms":"obscure, block, obliterate"},
+  {"word":"sinister","phonetic":"/ˈsɪnɪstər/","pos":"adj.","en_def":"suggesting evil or danger","zh_def":"阴险的，不祥的","synonyms":"ominous, menacing, foreboding"},
+  {"word":"flickering","phonetic":"/ˈflɪkərɪŋ/","pos":"adj.","en_def":"shining unsteadily with a wavering light","zh_def":"闪烁的，忽明忽暗的","synonyms":"flashing, glimmering, wavering"},
+  {"word":"meteor","phonetic":"/ˈmiːtiər/","pos":"n.","en_def":"a small body of matter from outer space that enters Earth's atmosphere","zh_def":"流星","synonyms":"shooting star, fireball, bolide"},
+  {"word":"plunge","phonetic":"/plʌndʒ/","pos":"v.","en_def":"to move suddenly and rapidly downward","zh_def":"骤降，坠落","synonyms":"dive, drop, hurtle"},
+  {"word":"preceding","phonetic":"/prɪˈsiːdɪŋ/","pos":"adj.","en_def":"coming before in time or order","zh_def":"前面的，上述的","synonyms":"previous, foregoing, prior"},
+  {"word":"prediction","phonetic":"/prɪˈdɪkʃən/","pos":"n.","en_def":"a statement about what will happen in the future","zh_def":"预测，预言","synonyms":"forecast, projection, prophecy"},
+  {"word":"devastation","phonetic":"/ˌdevəˈsteɪʃən/","pos":"n.","en_def":"great destruction or damage","zh_def":"毁灭，严重破坏","synonyms":"destruction, ruin, annihilation"},
+  {"word":"pay a visit","phonetic":"/peɪ ə ˈvɪzɪt/","pos":"phr.","en_def":"to make a visit to","zh_def":"拜访，造访","synonyms":"come by, call on, stop by"},
+  {"word":"distinct","phonetic":"/dɪˈstɪŋkt/","pos":"adj.","en_def":"clearly noticeable; definite","zh_def":"明显的，确实的","synonyms":"clear, definite, unmistakable"},
+  {"word":"revise","phonetic":"/rɪˈvaɪz/","pos":"v.","en_def":"to change or correct after further consideration","zh_def":"修正，修订","synonyms":"update, amend, correct"},
+  {"word":"indicate","phonetic":"/ˈɪndɪkeɪt/","pos":"v.","en_def":"to show or suggest something","zh_def":"表明，显示","synonyms":"suggest, show, demonstrate"},
+  {"word":"close shave","phonetic":"/kləʊz ʃeɪv/","pos":"phr.","en_def":"a narrow escape from danger","zh_def":"侥幸脱险，千钧一发","synonyms":"narrow escape, near miss, close call"},
+  {"word":"interloper","phonetic":"/ˈɪntəloʊpər/","pos":"n.","en_def":"one who intrudes into a place where they are not wanted","zh_def":"闯入者，入侵者","synonyms":"intruder, trespasser, invader"},
+  {"word":"originate","phonetic":"/əˈrɪdʒɪneɪt/","pos":"v.","en_def":"to begin or arise from a particular place or source","zh_def":"起源，发源","synonyms":"arise, stem, derive"},
+  {"word":"frigid","phonetic":"/ˈfrɪdʒɪd/","pos":"adj.","en_def":"extremely cold","zh_def":"极寒的，严寒的","synonyms":"freezing, arctic, glacial"},
+  {"word":"traffic","phonetic":"/ˈtræfɪk/","pos":"n.","en_def":"the movement of objects through a particular area","zh_def":"运动，流动","synonyms":"flow, movement, transit"},
+  {"word":"lethal","phonetic":"/ˈliːθəl/","pos":"adj.","en_def":"capable of causing death","zh_def":"致命的","synonyms":"deadly, fatal, mortal"},
+  {"word":"constitute","phonetic":"/ˈkɒnstɪtjuːt/","pos":"v.","en_def":"to make up or form something","zh_def":"构成，组成","synonyms":"form, comprise, make up"},
+  {"word":"ever-present","phonetic":"/ˌevəˈprezənt/","pos":"adj.","en_def":"always existing or occurring","zh_def":"永远存在的，无处不在的","synonyms":"constant, omnipresent, persistent"},
+  {"word":"menace","phonetic":"/ˈmenəs/","pos":"n.","en_def":"a threat or danger","zh_def":"威胁，危险","synonyms":"threat, hazard, peril"},
+  {"word":"routine","phonetic":"/ruːˈtiːn/","pos":"adj.","en_def":"done as a regular and standard procedure; ordinary","zh_def":"常规的，平常的","synonyms":"ordinary, regular, commonplace"},
+  {"word":"cometary","phonetic":"/ˈkɒmɪtəri/","pos":"adj.","en_def":"relating to or resembling a comet","zh_def":"彗星的","synonyms":"asteroidal, celestial"},
+  {"word":"magnitude","phonetic":"/ˈmæɡnɪtjuːd/","pos":"n.","en_def":"the great size or extent of something","zh_def":"规模，量级","synonyms":"scale, size, extent"},
+  {"word":"extinction","phonetic":"/ɪkˈstɪŋkʃən/","pos":"n.","en_def":"the state of being destroyed or no longer existing","zh_def":"灭绝，消亡","synonyms":"annihilation, obliteration, dying out"},
+  {"word":"Revelation","phonetic":"/ˌrevəˈleɪʃən/","pos":"n.","en_def":"the last book of the Bible describing the end of the world","zh_def":"《启示录》","synonyms":"—"},
+  {"word":"rumbling","phonetic":"/ˈrʌmblɪŋ/","pos":"n.","en_def":"a deep, continuous sound like distant thunder","zh_def":"隆隆声，轰鸣声","synonyms":"roar, growl, thunder"},
+  {"word":"peal","phonetic":"/piːl/","pos":"n.","en_def":"a loud, prolonged sound of thunder or bells","zh_def":"轰鸣，洪亮声","synonyms":"crash, boom, clap"},
+  {"word":"severe","phonetic":"/sɪˈvɪər/","pos":"adj.","en_def":"very great; intense","zh_def":"严重的，剧烈的","synonyms":"intense, extreme, violent"},
+  {"word":"tremendous","phonetic":"/trɪˈmendəs/","pos":"adj.","en_def":"very great in amount, scale, or intensity","zh_def":"巨大的，猛烈的","synonyms":"enormous, immense, colossal"},
+  {"word":"hailstone","phonetic":"/ˈheɪlstəʊn/","pos":"n.","en_def":"a ball of ice that falls like rain","zh_def":"冰雹","synonyms":"ice pellet, frozen raindrop"},
+  {"word":"plague","phonetic":"/pleɪɡ/","pos":"n.","en_def":"a widespread affliction or calamity","zh_def":"灾难，祸患","synonyms":"calamity, scourge, affliction"},
+  {"word":"hail","phonetic":"/heɪl/","pos":"n.","en_def":"balls of ice falling from the sky during a storm","zh_def":"冰雹","synonyms":"ice pellet, sleet"},
+  {"word":"puny","phonetic":"/ˈpjuːni/","pos":"adj.","en_def":"small and weak","zh_def":"渺小的，微不足道的","synonyms":"tiny, insignificant, feeble"},
+  {"word":"pervade","phonetic":"/pəˈveɪd/","pos":"v.","en_def":"to spread through and be perceived throughout","zh_def":"弥漫，充斥","synonyms":"permeate, saturate, suffuse"},
+  {"word":"hospitable","phonetic":"/hɒˈspɪtəbəl/","pos":"adj.","en_def":"providing a favorable environment for life","zh_def":"适宜居住的，有利于生存的","synonyms":"favorable, welcoming, benign"},
+  {"word":"galactic","phonetic":"/ɡəˈlæktɪk/","pos":"adj.","en_def":"relating to a galaxy","zh_def":"银河系的，星系的","synonyms":"cosmic, stellar, interstellar"},
+  {"word":"bulge","phonetic":"/bʌldʒ/","pos":"n.","en_def":"a rounded swelling or projection","zh_def":"隆起，凸出部分","synonyms":"protrusion, swelling, hump"},
+  {"word":"string out","phonetic":"/strɪŋ aʊt/","pos":"phr.v.","en_def":"to spread out in a line","zh_def":"延伸排列，分散分布","synonyms":"spread out, extend, stretch"},
+  {"word":"Andromeda","phonetic":"/ænˈdrɒmɪdə/","pos":"n.","en_def":"the nearest large galaxy to the Milky Way","zh_def":"仙女座星系","synonyms":"—"},
+  {"word":"constellation","phonetic":"/ˌkɒnstəˈleɪʃən/","pos":"n.","en_def":"a group of stars forming a recognizable pattern","zh_def":"星座","synonyms":"star pattern, asterism"},
+  {"word":"unaided eye","phonetic":"/ʌnˈeɪdɪd aɪ/","pos":"phr.","en_def":"without any optical instruments such as a telescope","zh_def":"肉眼","synonyms":"naked eye, bare eye"},
+  {"word":"fuzzy","phonetic":"/ˈfʌzi/","pos":"adj.","en_def":"difficult to see clearly; blurred","zh_def":"模糊的，朦胧的","synonyms":"blurry, hazy, indistinct"},
+  {"word":"elliptical","phonetic":"/ɪˈlɪptɪkəl/","pos":"adj.","en_def":"having the shape of an ellipse; oval","zh_def":"椭圆形的","synonyms":"oval, oblong, egg-shaped"},
+  {"word":"adorn","phonetic":"/əˈdɔːrn/","pos":"v.","en_def":"to make more attractive; to decorate","zh_def":"点缀，装饰","synonyms":"decorate, embellish, grace"},
+  {"word":"pose","phonetic":"/pəʊz/","pos":"v.","en_def":"to present or constitute a problem or threat","zh_def":"构成，带来（威胁）","synonyms":"present, constitute, represent"},
+  {"word":"spectacular","phonetic":"/spekˈtækjələr/","pos":"adj.","en_def":"beautiful in a dramatic and eye-catching way","zh_def":"壮观的，引人注目的","synonyms":"magnificent, breathtaking, stunning"},
+  {"word":"nucleus","phonetic":"/ˈnjuːkliəs/","pos":"n.","en_def":"the central part of something","zh_def":"核心，核","synonyms":"core, center, heart"},
+  {"word":"retinue","phonetic":"/ˈretɪnjuː/","pos":"n.","en_def":"a group of things accompanying something important","zh_def":"随行队伍，伴随物","synonyms":"entourage, escort, following"},
+  {"word":"evaporate","phonetic":"/ɪˈvæpəreɪt/","pos":"v.","en_def":"to convert from liquid into vapor","zh_def":"蒸发，挥发","synonyms":"vaporize, dissipate, sublime"},
+  {"word":"volatile","phonetic":"/ˈvɒlətaɪl/","pos":"adj.","en_def":"easily evaporated at normal temperatures","zh_def":"易挥发的","synonyms":"unstable, evaporable, gaseous"},
+  {"word":"streamer","phonetic":"/ˈstriːmər/","pos":"n.","en_def":"a long, narrow flow of something","zh_def":"长条，流","synonyms":"trail, plume, ribbon"},
+  {"word":"sojourn","phonetic":"/ˈsɒdʒɜːrn/","pos":"n.","en_def":"a temporary stay in a place","zh_def":"短暂停留，逗留","synonyms":"stay, visit, stopover"},
+  {"word":"insulate","phonetic":"/ˈɪnsjuleɪt/","pos":"v.","en_def":"to protect from harmful external influences","zh_def":"隔绝，保护","synonyms":"protect, shield, isolate"},
+  {"word":"drift","phonetic":"/drɪft/","pos":"v.","en_def":"to move slowly and without direction","zh_def":"漂移，缓慢移动","synonyms":"float, wander, meander"},
+  {"word":"tenuous","phonetic":"/ˈtenjuəs/","pos":"adj.","en_def":"very thin or slight; not dense","zh_def":"稀薄的，稀疏的","synonyms":"thin, sparse, rarefied"},
+  {"word":"drastically","phonetic":"/ˈdræstɪkli/","pos":"adv.","en_def":"in a way that is severe or far-reaching","zh_def":"剧烈地，大幅度地","synonyms":"severely, radically, profoundly"},
+  {"word":"lurk","phonetic":"/lɜːrk/","pos":"v.","en_def":"to be present in a hidden or unsuspected way","zh_def":"潜伏，隐藏","synonyms":"hide, skulk, lie in wait"},
+  {"word":"inky","phonetic":"/ˈɪŋki/","pos":"adj.","en_def":"very dark; black as ink","zh_def":"漆黑的，墨黑的","synonyms":"pitch-black, dark, murky"},
+  {"word":"rogue","phonetic":"/rəʊɡ/","pos":"adj.","en_def":"behaving in an unpredictable or dangerous way","zh_def":"游荡的，失控的","synonyms":"errant, wayward, maverick"},
+  {"word":"havoc","phonetic":"/ˈhævək/","pos":"n.","en_def":"widespread destruction or disorder","zh_def":"严重破坏，大混乱","synonyms":"chaos, devastation, mayhem"}
+];
+
+const state = {};
+WORDS.forEach(w => state[w.word] = 'fresh');
+let currentFilter = 'all';
+let currentWord = null;
+let wordOnlyMode = false;
+let displayOrder = [...WORDS];
+
+try {
+  const saved = localStorage.getItem('tlm_ch1_cards_state');
+  if (saved) Object.assign(state, JSON.parse(saved));
+} catch(e) {}
+
+function saveState() {
+  try { localStorage.setItem('tlm_ch1_cards_state', JSON.stringify(state)); } catch(e) {}
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function updateStats() {
+  const vals = Object.values(state);
+  document.getElementById('cnt-known').textContent = vals.filter(v => v === 'known').length;
+  document.getElementById('cnt-unknown').textContent = vals.filter(v => v === 'unknown').length;
+  document.getElementById('cnt-fresh').textContent = vals.filter(v => v === 'fresh').length;
+}
+
+function getFiltered() {
+  if (currentFilter === 'all') return displayOrder;
+  return displayOrder.filter(w => state[w.word] === currentFilter);
+}
+
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  getFiltered().forEach(w => {
+    const s = state[w.word];
+    const card = document.createElement('div');
+    card.className = 'card' + (s !== 'fresh' ? ' ' + s : '');
+    card.innerHTML = `
+      ${s !== 'fresh' ? '<div class="card-status"></div>' : ''}
+      <div class="card-word">${w.word}</div>
+      <div class="card-bottom">
+        <div class="card-pos">${w.pos}</div>
+        <div class="card-zh">${w.zh_def}</div>
+      </div>
+    `;
+    card.addEventListener('click', () => openModal(w));
+    grid.appendChild(card);
+  });
+  updateStats();
+}
+
+function speak(word) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(word);
+    u.lang = 'en-US'; u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+function openModal(w) {
+  currentWord = w;
+  document.getElementById('modal-word').textContent = w.word;
+  document.getElementById('modal-phonetic').textContent = w.phonetic;
+  document.getElementById('modal-pos').textContent = w.pos;
+  document.getElementById('modal-en').textContent = w.en_def;
+  document.getElementById('modal-zh').textContent = w.zh_def;
+  document.getElementById('modal-synonyms').textContent = w.synonyms !== '—' ? '≈ ' + w.synonyms : '';
+  const s = state[w.word];
+  document.getElementById('btn-known').textContent = s === 'known' ? '✓ 已掌握（取消）' : '✓ 已掌握';
+  document.getElementById('btn-unknown').textContent = s === 'unknown' ? '✗ 待复习（取消）' : '✗ 待复习';
+  document.getElementById('overlay').classList.add('visible');
+  speak(w.word);
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('visible');
+  currentWord = null;
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderGrid();
+  });
+});
+
+document.getElementById('btn-shuffle').addEventListener('click', () => {
+  displayOrder = shuffle(displayOrder);
+  renderGrid();
+  document.getElementById('grid-container').scrollTop = 0;
+});
+
+document.getElementById('btn-word-only').addEventListener('click', () => {
+  wordOnlyMode = !wordOnlyMode;
+  document.body.classList.toggle('word-only', wordOnlyMode);
+  document.getElementById('btn-word-only').classList.toggle('active', wordOnlyMode);
+});
+
+document.getElementById('btn-known').addEventListener('click', () => {
+  if (!currentWord) return;
+  state[currentWord.word] = state[currentWord.word] === 'known' ? 'fresh' : 'known';
+  saveState(); renderGrid(); closeModal();
+});
+document.getElementById('btn-unknown').addEventListener('click', () => {
+  if (!currentWord) return;
+  state[currentWord.word] = state[currentWord.word] === 'unknown' ? 'fresh' : 'unknown';
+  saveState(); renderGrid(); closeModal();
+});
+document.getElementById('btn-close').addEventListener('click', closeModal);
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && document.getElementById('overlay').classList.contains('visible')) {
+    e.preventDefault(); closeModal();
+  }
+});
+
+renderGrid();
+</script>
+</body>
+</html>

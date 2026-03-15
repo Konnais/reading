@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>The Last Three Minutes — Chapter 1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+  :root {
+    --bg: #f7f3ed;
+    --paper: #fdfaf6;
+    --text: #2c2416;
+    --text-secondary: #6b5d4e;
+    --text-muted: #a8967e;
+    --accent: #7a4f2e;
+    --accent-light: #c4956a;
+    --border: #e2d8cc;
+    --border-dark: #c8b89e;
+    --highlight: #f0e6d2;
+    --highlight-active: #e8d8bc;
+    --known-bg: #eef5ec;
+    --known-border: #a8d4a0;
+    --known-text: #4a7a44;
+    --shadow: rgba(60, 35, 10, 0.10);
+    --overlay-bg: rgba(42, 36, 32, 0.40);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { background: var(--bg); min-height: 100%; }
+  body {
+    font-family: 'Crimson Pro', 'Noto Serif SC', 'STSong', Georgia, serif;
+    color: var(--text); min-height: 100vh;
+  }
+
+  /* ── Article ── */
+  #article {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 52px 60px 72px;
+    line-height: 1.95;
+    font-size: 18px;
+    text-align: justify;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    -webkit-hyphenate-limit-chars: 6 3 3;
+    hyphenate-limit-chars: 6 3 3;
+  }
+
+  @media (max-width: 600px) {
+    #article {
+      padding: 20px 16px 48px;
+      font-size: 17px;
+      line-height: 1.85;
+    }
+    .chapter-heading { font-size: 30px; margin-bottom: 24px; padding-bottom: 16px; }
+    #card { padding: 22px 18px 18px; }
+    #card-word { font-size: 30px; }
+    #card-zh { font-size: 22px; margin-bottom: 20px; }
+    .card-divider { margin: 0 -18px 14px; }
+    #card-actions { gap: 6px; }
+    .card-btn { padding: 10px; font-size: 12px; }
+  }
+
+  .chapter-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 12px; font-weight: 400;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .chapter-heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 48px; font-weight: 300;
+    color: var(--text); line-height: 1.1;
+    margin-bottom: 44px; padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  #article p { margin-bottom: 1.65em; }
+
+  .blockquote {
+    margin: 0 0 1.65em 0;
+    padding: 16px 24px;
+    border-left: 3px solid var(--accent-light);
+    background: rgba(196, 149, 106, 0.06);
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+
+  /* ── Vocab word ── */
+  .vocab {
+    display: inline;
+    background: var(--highlight);
+    border-bottom: 1.5px solid var(--accent-light);
+    border-radius: 2px; padding: 0 2px;
+    cursor: pointer; transition: background 0.15s;
+    font-weight: 600;
+  }
+  .vocab:active { background: var(--highlight-active); }
+  .vocab.known {
+    background: var(--known-bg);
+    border-bottom-color: var(--known-border);
+    font-weight: 400; opacity: 0.72;
+  }
+
+  /* ── Overlay ── */
+  #overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: var(--overlay-bg);
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease;
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  #overlay.visible { opacity: 1; pointer-events: all; }
+
+  #card {
+    background: var(--paper);
+    border: 1px solid var(--border-dark);
+    border-radius: 20px;
+    width: 100%; max-width: 480px;
+    padding: 34px 32px 26px;
+    box-shadow: 0 24px 64px var(--shadow);
+    transform: scale(0.93) translateY(12px);
+    transition: transform 0.28s cubic-bezier(0.34, 1.5, 0.64, 1);
+  }
+  #overlay.visible #card { transform: scale(1) translateY(0); }
+
+  #card-word {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 42px; font-weight: 600;
+    color: var(--text); line-height: 1.1; margin-bottom: 4px;
+  }
+  #card-phonetic {
+    font-size: 15px; color: var(--accent-light);
+    font-style: italic; margin-bottom: 22px;
+  }
+  .card-divider { height: 1px; background: var(--border); margin: 0 -32px 18px; }
+  #card-pos {
+    font-size: 28px; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
+  }
+  #card-en {
+    font-size: 28px; color: var(--text-secondary);
+    font-style: italic; line-height: 1.6; margin-bottom: 10px;
+  }
+  #card-zh {
+    font-size: 28px; color: var(--text);
+    font-weight: 300; line-height: 1.3; margin-bottom: 8px;
+  }
+  #card-synonyms {
+    font-size: 28px; color: var(--text-muted);
+    font-style: italic; margin-bottom: 22px;
+  }
+  #card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .card-btn {
+    padding: 12px; border-radius: 10px; border: 1px solid;
+    font-family: inherit; font-size: 13px; cursor: pointer;
+    transition: all 0.15s; -webkit-appearance: none;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
+  .card-btn:active { transform: scale(0.97); }
+  #btn-known { background: var(--known-bg); border-color: var(--known-border); color: var(--known-text); }
+  #btn-close { background: transparent; border-color: var(--border); color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<div id="article">
+
+  <div class="chapter-label">The Last Three Minutes</div>
+  <h2 class="chapter-heading">Chapter 1: Doomsday</h2>
+
+  <p>The date: August 21, 2126. Doomsday.</p>
+
+  <p>The place: Earth. Across the planet a <span class="vocab" data-word="despairing">despairing</span> population attempts to hide. For billions there is nowhere to go. Some people <span class="vocab" data-word="flee">flee</span> deep underground, desperately seeking out caves and <span class="vocab" data-word="disused">disused</span> mine <span class="vocab" data-word="shaft">shafts</span>, or take to the sea in submarines. Others go on the <span class="vocab" data-word="rampage">rampage</span>, <span class="vocab" data-word="murderous">murderous</span> and <span class="vocab" data-word="uncaring">uncaring</span>. Most just sit, <span class="vocab" data-word="sullen">sullen</span> and <span class="vocab" data-word="bemused">bemused</span>, waiting for the end.</p>
+
+  <p>High in the sky, a huge <span class="vocab" data-word="shaft">shaft</span> of light is <span class="vocab" data-word="etch">etched</span> into the <span class="vocab" data-word="fabric">fabric</span> of the heavens. What began as a <span class="vocab" data-word="slender">slender</span> pencil of softly <span class="vocab" data-word="radiate">radiating</span> <span class="vocab" data-word="nebulosity">nebulosity</span> has <span class="vocab" data-word="swell">swollen</span> day by day to form a <span class="vocab" data-word="maelstrom">maelstrom</span> of gas boiling into the vacuum of space. At the <span class="vocab" data-word="apex">apex</span> of a <span class="vocab" data-word="vapor">vapor</span> trail lies a dark, <span class="vocab" data-word="misshapen">misshapen</span>, <span class="vocab" data-word="menacing">menacing</span> <span class="vocab" data-word="lump">lump</span>. The <span class="vocab" data-word="diminutive">diminutive</span> head of the <span class="vocab" data-word="comet">comet</span> <span class="vocab" data-word="belie">belies</span> its enormous <span class="vocab" data-word="destructive">destructive</span> power. It is closing on planet Earth at a <span class="vocab" data-word="staggering">staggering</span> 40,000 miles per hour, 10 miles every second—a trillion tons of ice and rock, <span class="vocab" data-word="destine">destined</span> to strike at seventy times the speed of sound.</p>
+
+  <p>Mankind can only watch and wait. The scientists, who have long since abandoned their telescopes in the face of the inevitable, quietly shut down the computers. The endless simulations of disaster are still too uncertain, and their conclusions are too alarming to release to the public anyway. Some scientists have prepared <span class="vocab" data-word="elaborate">elaborate</span> survival strategies, using their technical knowledge to gain advantage over their fellow citizens. Others plan to observe the <span class="vocab" data-word="cataclysm">cataclysm</span> as carefully as possible, maintaining their role as true scientists to the very end, transmitting data to time capsules buried deep in the Earth. For <span class="vocab" data-word="posterity">posterity</span>....</p>
+
+  <p>The moment of impact approaches. All over the world, millions of people nervously check their watches. The last three minutes.</p>
+
+  <p>Directly above ground zero, the sky splits open. A thousand cubic miles of air are blasted aside. A finger of <span class="vocab" data-word="searing">searing</span> flame wider than a city arcs groundward and fifteen seconds later <span class="vocab" data-word="lance">lances</span> the Earth. The planet <span class="vocab" data-word="shudder">shudders</span> with the force of ten thousand earthquakes. A shock wave of displaced air sweeps over the surface of the globe, flattening all structures, <span class="vocab" data-word="pulverize">pulverizing</span> everything in its path. The flat terrain around the impact site rises in a ring of liquid mountains several miles high, exposing the bowels of the Earth in a <span class="vocab" data-word="crater">crater</span> a hundred miles across. The wall of <span class="vocab" data-word="molten">molten</span> rock <span class="vocab" data-word="ripple">ripples</span> outward, <span class="vocab" data-word="toss">tossing</span> the landscape about like a blanket <span class="vocab" data-word="flick">flicked</span> in slow motion.</p>
+
+  <p>Within the <span class="vocab" data-word="crater">crater</span> itself, trillions of tons of rock are <span class="vocab" data-word="vaporize">vaporized</span>. Much more is splashed <span class="vocab" data-word="aloft">aloft</span>, some of it <span class="vocab" data-word="fling">flung</span> out into space. Still more is <span class="vocab" data-word="pitch">pitched</span> across half a continent to rain down hundreds or even thousands of miles away, <span class="vocab" data-word="wreak">wreaking</span> massive destruction on all beneath. Some of the molten <span class="vocab" data-word="ejecta">ejecta</span> falls into the ocean, raising huge <span class="vocab" data-word="tsunami">tsunamis</span> that add to the spreading <span class="vocab" data-word="turmoil">turmoil</span>. A vast column of <span class="vocab" data-word="dusty">dusty</span> debris fans out into the atmosphere, <span class="vocab" data-word="blot">blotting</span> out the sun across the whole planet. Now the sunlight is replaced by the <span class="vocab" data-word="sinister">sinister</span>, <span class="vocab" data-word="flickering">flickering</span> glare of a billion <span class="vocab" data-word="meteor">meteors</span>, roasting the ground below with their <span class="vocab" data-word="searing">searing</span> heat, as displaced material <span class="vocab" data-word="plunge">plunges</span> back from space into the atmosphere.</p>
+
+  <p>The <span class="vocab" data-word="preceding">preceding</span> scenario is based on the <span class="vocab" data-word="prediction">prediction</span> that comet Swift-Tuttle will hit the earth on August 21, 2126. If it were to, global <span class="vocab" data-word="devastation">devastation</span> would undoubtedly follow, destroying human civilization. When this comet <span class="vocab" data-word="pay a visit">paid</span> us a visit in 1993, early calculations suggested that a collision in 2126 was a <span class="vocab" data-word="distinct">distinct</span> possibility. Since then, <span class="vocab" data-word="revise">revised</span> calculations <span class="vocab" data-word="indicate">indicate</span> that the comet will in fact miss Earth by two weeks: a <span class="vocab" data-word="close shave">close shave</span>, but we can breathe easily. However, the danger won't go away entirely. Sooner or later Swift-Tuttle, or an object like it, will hit the Earth. Estimates suggest that 10,000 objects half a kilometer or more in diameter move on Earth-intersecting orbits. These astronomical <span class="vocab" data-word="interloper">interlopers</span> <span class="vocab" data-word="originate">originate</span> in the <span class="vocab" data-word="frigid">frigid</span> outer reaches of the solar system. Some are the remains of comets that have become trapped by the gravitational fields of the planets, others come from the asteroid belt that lies between Mars and Jupiter. Orbital instability causes a continual <span class="vocab" data-word="traffic">traffic</span> of these small but <span class="vocab" data-word="lethal">lethal</span> bodies into and out of the inner solar system, <span class="vocab" data-word="constitute">constituting</span> an <span class="vocab" data-word="ever-present">ever-present</span> <span class="vocab" data-word="menace">menace</span> to Earth and our sister planets.</p>
+
+  <p>Many of these objects are capable of causing more damage than all the world's nuclear weapons put together. It is only a matter of time before one strikes. When it does, it will be bad news for people. There will be an abrupt and unprecedented interruption in the history of our species. But for the Earth such an event is more or less <span class="vocab" data-word="routine">routine</span>. <span class="vocab" data-word="cometary">Cometary</span> or asteroid impacts of this <span class="vocab" data-word="magnitude">magnitude</span> occur, on average, every few million years. It is widely believed that one or more such events caused the <span class="vocab" data-word="extinction">extinction</span> of the dinosaurs sixty-five million years ago. It could be us next time.</p>
+
+  <p>Belief in Armageddon is deep-rooted in most religions and cultures. The biblical book of <span class="vocab" data-word="Revelation">Revelation</span> gives a vivid account of the death and destruction that lie in store for us:</p>
+
+  <div class="blockquote">
+    <p>Then there came flashes of lightning, <span class="vocab" data-word="rumbling">rumblings</span>, <span class="vocab" data-word="peal">peals</span> of thunder, and a <span class="vocab" data-word="severe">severe</span> earthquake. No earthquake like it has ever occurred since man has been on Earth, so <span class="vocab" data-word="tremendous">tremendous</span> was the quake.... The cities of the nations collapsed.... Every island fled away and the mountains could not be found. From the sky huge <span class="vocab" data-word="hailstone">hailstones</span> of about a hundred pounds each fell upon men. And they cursed God on account of the <span class="vocab" data-word="plague">plague</span> of <span class="vocab" data-word="hail">hail</span>, because the plague was so terrible.</p>
+  </div>
+
+  <p>There are certainly lots of nasty things that could happen to Earth, a <span class="vocab" data-word="puny">puny</span> object in a universe <span class="vocab" data-word="pervade">pervaded</span> by violent forces, yet our planet has remained <span class="vocab" data-word="hospitable">hospitable</span> to life for at least three and a half billion years. The secret of our success on planet Earth is space. Lots of it. Our solar system is a tiny island of activity in an ocean of emptiness. The nearest star (after the sun) lies more than four light-years away. To get some idea of how far that is, consider that light traverses the ninety-three million miles from the sun in only eight and a half minutes. In four years, it travels more than twenty trillion miles.</p>
+
+  <p>The sun is a typical dwarf star, lying in a typical region of our galaxy, the Milky Way. The galaxy contains about a hundred billion stars, ranging in mass from a few percent to a hundred times the mass of the sun. These objects, together with a lot of gas clouds and dust and an uncertain number of comets, asteroids, planets, and black holes, slowly orbit the <span class="vocab" data-word="galactic">galactic</span> center. Such a huge collection of bodies may give the impression that the galaxy is a very crowded system, until account is taken of the fact that the visible part of the Milky Way measures about a hundred thousand light-years across. It is shaped like a plate, with a central <span class="vocab" data-word="bulge">bulge</span>; a few spiral arms made up of stars and gas are <span class="vocab" data-word="string out">strung out</span> around it. Our sun is located in one such spiral arm and is about thirty thousand light-years from the middle.</p>
+
+  <p>As far as we know, there is nothing very exceptional about the Milky Way. A similar galaxy, called <span class="vocab" data-word="Andromeda">Andromeda</span>, lies about two million light-years away, in the direction of the <span class="vocab" data-word="constellation">constellation</span> of that name. It can just be seen with the <span class="vocab" data-word="unaided eye">unaided eye</span> as a <span class="vocab" data-word="fuzzy">fuzzy</span> patch of light. Many billions of galaxies, some spiral, some <span class="vocab" data-word="elliptical">elliptical</span>, some irregular, <span class="vocab" data-word="adorn">adorn</span> the observable universe. The scale of distance is vast. Powerful telescopes can image individual galaxies several billion light-years away. In some cases, it has taken their light longer than the age of the Earth (four and a half billion years) to reach us.</p>
+
+  <p>All this space means that cosmic collisions are rare. The greatest threat to Earth is probably from our own backyard. Asteroids do not normally orbit close to Earth; they are largely confined to the belt between Mars and Jupiter. But the huge mass of Jupiter can disturb the asteroids' orbits, occasionally sending one of them <span class="vocab" data-word="plunge">plunging</span> in toward the sun, and thus <span class="vocab" data-word="menace">menacing</span> Earth.</p>
+
+  <p>Comets <span class="vocab" data-word="pose">pose</span> another threat. These <span class="vocab" data-word="spectacular">spectacular</span> bodies are believed to originate in an invisible cloud situated about a light year from the sun. Here the threat comes not from Jupiter but from passing stars. The galaxy is not static; it rotates slowly, as its stars orbit the galactic <span class="vocab" data-word="nucleus">nucleus</span>. The sun and its little <span class="vocab" data-word="retinue">retinue</span> of planets take about two hundred million years to complete one circuit of the galaxy, and on the way they have many adventures. Nearby stars may brush the cloud of comets, displacing a few toward the sun. As the comets plunge through the inner solar system, the sun <span class="vocab" data-word="evaporate">evaporates</span> some of their <span class="vocab" data-word="volatile">volatile</span> material, and the solar wind blows it out in a long <span class="vocab" data-word="streamer">streamer</span>—the famous cometary tail. Very rarely, a comet will collide with the Earth during its <span class="vocab" data-word="sojourn">sojourn</span> in the inner solar system. The comet does the damage, but the passing star must bear the responsibility. Fortunately, the huge distances between the stars <span class="vocab" data-word="insulate">insulate</span> us against too many such encounters.</p>
+
+  <p>Other objects can also pass our way on their journey around the galaxy. Giant clouds of gas <span class="vocab" data-word="drift">drift</span> slowly by, and though they are more <span class="vocab" data-word="tenuous">tenuous</span> even than a laboratory vacuum they can <span class="vocab" data-word="drastically">drastically</span> alter the solar wind and may affect the heat flow from the sun. Other, more <span class="vocab" data-word="sinister">sinister</span> objects may <span class="vocab" data-word="lurk">lurk</span> in the <span class="vocab" data-word="inky">inky</span> depths of space: <span class="vocab" data-word="rogue">rogue</span> planets, neutron stars, brown dwarfs, black holes—all these and more could come upon us unseen, without warning, and <span class="vocab" data-word="wreak">wreak</span> <span class="vocab" data-word="havoc">havoc</span> with the solar system.</p>
+
+</div>
+
+<div id="overlay">
+  <div id="card">
+    <div id="card-word"></div>
+    <div id="card-phonetic"></div>
+    <div class="card-divider"></div>
+    <div id="card-pos"></div>
+    <div id="card-en"></div>
+    <div id="card-zh"></div>
+    <div id="card-synonyms"></div>
+    <div id="card-actions">
+      <button class="card-btn" id="btn-known">✓ 已掌握</button>
+      <button class="card-btn" id="btn-close">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const VOCAB = {
+  "despairing":{"phonetic":"/dɪˈspeərɪŋ/","pos":"adj.","en_def":"feeling or showing a complete loss of hope","zh_def":"绝望的","synonyms":"hopeless, desperate"},
+  "flee":{"phonetic":"/fliː/","pos":"v.","en_def":"to run away from danger or an unpleasant situation","zh_def":"逃离，逃跑","synonyms":"escape, run away"},
+  "disused":{"phonetic":"/ˌdɪsˈjuːzd/","pos":"adj.","en_def":"no longer being used","zh_def":"废弃的，不再使用的","synonyms":"abandoned, derelict"},
+  "shaft":{"phonetic":"/ʃɑːft/","pos":"n.","en_def":"a long, narrow, vertical passage in the ground","zh_def":"竖井，矿井","synonyms":"tunnel, pit"},
+  "rampage":{"phonetic":"/ˈræmpeɪdʒ/","pos":"n.","en_def":"a period of violent, uncontrolled behavior","zh_def":"横冲直撞，暴乱","synonyms":"riot, frenzy"},
+  "murderous":{"phonetic":"/ˈmɜːrdərəs/","pos":"adj.","en_def":"capable of or intending to commit murder; extremely dangerous","zh_def":"凶残的，杀气腾腾的","synonyms":"lethal, savage, ferocious"},
+  "uncaring":{"phonetic":"/ˌʌnˈkeərɪŋ/","pos":"adj.","en_def":"not showing concern for others","zh_def":"漠不关心的，冷酷的","synonyms":"indifferent, callous"},
+  "sullen":{"phonetic":"/ˈsʌlən/","pos":"adj.","en_def":"bad-tempered and silent; gloomy","zh_def":"闷闷不乐的，阴沉的","synonyms":"gloomy, morose, brooding"},
+  "bemused":{"phonetic":"/bɪˈmjuːzd/","pos":"adj.","en_def":"confused and unable to think clearly","zh_def":"茫然的，困惑的","synonyms":"bewildered, perplexed, dazed"},
+  "etch":{"phonetic":"/etʃ/","pos":"v.","en_def":"to fix permanently and clearly on a surface","zh_def":"刻画，铭刻","synonyms":"engrave, inscribe, imprint"},
+  "fabric":{"phonetic":"/ˈfæbrɪk/","pos":"n.","en_def":"the basic structure or nature of something","zh_def":"结构，本质","synonyms":"structure, framework, texture"},
+  "slender":{"phonetic":"/ˈslendər/","pos":"adj.","en_def":"thin and narrow","zh_def":"细长的，纤细的","synonyms":"thin, narrow, slight"},
+  "radiate":{"phonetic":"/ˈreɪdieɪt/","pos":"v.","en_def":"to spread outward from a central point","zh_def":"辐射，散射","synonyms":"emit, emanate, diffuse"},
+  "nebulosity":{"phonetic":"/ˌnebjuˈlɒsɪti/","pos":"n.","en_def":"a cloud-like mass of gas or dust in space","zh_def":"星云状物质，云雾状体","synonyms":"nebula, haze, cloud"},
+  "swell":{"phonetic":"/swel/","pos":"v.","en_def":"to increase greatly in size","zh_def":"膨胀，扩大","synonyms":"expand, enlarge, balloon"},
+  "maelstrom":{"phonetic":"/ˈmeɪlstrəm/","pos":"n.","en_def":"a situation of confused movement or violent forces","zh_def":"大漩涡，混乱局面","synonyms":"whirlpool, vortex, turmoil"},
+  "apex":{"phonetic":"/ˈeɪpeks/","pos":"n.","en_def":"the highest point of something","zh_def":"顶点，顶端","synonyms":"peak, summit, tip"},
+  "vapor":{"phonetic":"/ˈveɪpər/","pos":"n.","en_def":"a gas or mist formed from a liquid","zh_def":"蒸气，水汽","synonyms":"steam, mist, gas"},
+  "misshapen":{"phonetic":"/ˌmɪsˈʃeɪpən/","pos":"adj.","en_def":"having an unusual or irregular shape","zh_def":"形状不规则的，畸形的","synonyms":"deformed, distorted, irregular"},
+  "menacing":{"phonetic":"/ˈmenəsɪŋ/","pos":"adj.","en_def":"suggesting a threat; threatening","zh_def":"威胁性的，险恶的","synonyms":"threatening, ominous, sinister"},
+  "lump":{"phonetic":"/lʌmp/","pos":"n.","en_def":"a compact, irregularly shaped mass","zh_def":"块，团","synonyms":"chunk, mass, clump"},
+  "diminutive":{"phonetic":"/dɪˈmɪnjətɪv/","pos":"adj.","en_def":"extremely small","zh_def":"极小的，微小的","synonyms":"tiny, minute, miniature"},
+  "comet":{"phonetic":"/ˈkɒmɪt/","pos":"n.","en_def":"a celestial body with a bright head and a long tail that orbits the sun","zh_def":"彗星","synonyms":"asteroid, bolide"},
+  "belie":{"phonetic":"/bɪˈlaɪ/","pos":"v.","en_def":"to give a false impression of; to contradict","zh_def":"掩盖，与……不符","synonyms":"contradict, misrepresent, conceal"},
+  "destructive":{"phonetic":"/dɪˈstrʌktɪv/","pos":"adj.","en_def":"causing great damage or harm","zh_def":"破坏性的，毁灭性的","synonyms":"devastating, ruinous, catastrophic"},
+  "staggering":{"phonetic":"/ˈstæɡərɪŋ/","pos":"adj.","en_def":"extremely shocking or surprising","zh_def":"惊人的，令人震惊的","synonyms":"astonishing, astounding, overwhelming"},
+  "destine":{"phonetic":"/ˈdestɪn/","pos":"v.","en_def":"to be certain to happen in the future","zh_def":"注定，命中注定","synonyms":"doom, ordain, predetermine"},
+  "elaborate":{"phonetic":"/ɪˈlæbərət/","pos":"adj.","en_def":"involving many carefully arranged parts; detailed and complicated","zh_def":"精心设计的，复杂的","synonyms":"complex, intricate, detailed"},
+  "cataclysm":{"phonetic":"/ˈkætəklɪzəm/","pos":"n.","en_def":"a sudden violent event that causes great destruction","zh_def":"大灾难，剧变","synonyms":"catastrophe, disaster, calamity"},
+  "posterity":{"phonetic":"/pɒˈsterɪti/","pos":"n.","en_def":"future generations of people","zh_def":"后代，子孙后代","synonyms":"descendants, future generations, offspring"},
+  "searing":{"phonetic":"/ˈsɪərɪŋ/","pos":"adj.","en_def":"extremely hot; burning intensely","zh_def":"灼热的，炙热的","synonyms":"scorching, blazing, blistering"},
+  "lance":{"phonetic":"/lɑːns/","pos":"v.","en_def":"to pierce or cut through something sharply","zh_def":"刺穿，穿透","synonyms":"pierce, stab, penetrate"},
+  "shudder":{"phonetic":"/ˈʃʌdər/","pos":"v.","en_def":"to shake or vibrate suddenly and violently","zh_def":"震动，颤抖","synonyms":"tremble, quake, shiver"},
+  "pulverize":{"phonetic":"/ˈpʌlvəraɪz/","pos":"v.","en_def":"to crush something into fine powder or pieces","zh_def":"粉碎，碾碎","synonyms":"crush, grind, shatter"},
+  "crater":{"phonetic":"/ˈkreɪtər/","pos":"n.","en_def":"a large hole in the ground caused by an explosion or impact","zh_def":"撞击坑，火山口","synonyms":"pit, cavity, hollow"},
+  "molten":{"phonetic":"/ˈməʊltən/","pos":"adj.","en_def":"melted at very high temperatures","zh_def":"熔融的，熔化的","synonyms":"liquefied, melted, fused"},
+  "ripple":{"phonetic":"/ˈrɪpəl/","pos":"v.","en_def":"to spread outward in waves","zh_def":"波动，扩散","synonyms":"undulate, radiate, spread"},
+  "toss":{"phonetic":"/tɒs/","pos":"v.","en_def":"to throw or move something roughly","zh_def":"抛掷，颠簸","synonyms":"hurl, fling, pitch"},
+  "flick":{"phonetic":"/flɪk/","pos":"v.","en_def":"to move with a quick, light motion","zh_def":"轻弹，抖动","synonyms":"snap, flip, jerk"},
+  "vaporize":{"phonetic":"/ˈveɪpəraɪz/","pos":"v.","en_def":"to convert into vapor by extreme heat","zh_def":"气化，蒸发","synonyms":"evaporate, sublimate, gasify"},
+  "aloft":{"phonetic":"/əˈlɒft/","pos":"adv.","en_def":"up into the air; high above the ground","zh_def":"高空，向空中","synonyms":"skyward, upward, overhead"},
+  "fling":{"phonetic":"/flɪŋ/","pos":"v.","en_def":"to throw with great force","zh_def":"猛抛，抛出","synonyms":"hurl, launch, catapult"},
+  "pitch":{"phonetic":"/pɪtʃ/","pos":"v.","en_def":"to throw or hurl forcefully","zh_def":"投掷，抛出","synonyms":"hurl, fling, launch"},
+  "wreak":{"phonetic":"/riːk/","pos":"v.","en_def":"to cause great damage or harm","zh_def":"造成（破坏），施加","synonyms":"inflict, cause, bring about"},
+  "ejecta":{"phonetic":"/ɪˈdʒektə/","pos":"n.","en_def":"material thrown out by a volcanic eruption or impact","zh_def":"喷出物，溅射物","synonyms":"debris, fallout, expelled material"},
+  "tsunami":{"phonetic":"/suːˈnɑːmi/","pos":"n.","en_def":"a large ocean wave caused by an underwater earthquake or impact","zh_def":"海啸","synonyms":"tidal wave, surge"},
+  "turmoil":{"phonetic":"/ˈtɜːrmɔɪl/","pos":"n.","en_def":"a state of great confusion or disorder","zh_def":"混乱，动荡","synonyms":"chaos, upheaval, disorder"},
+  "dusty":{"phonetic":"/ˈdʌsti/","pos":"adj.","en_def":"covered with or full of dust","zh_def":"尘埃弥漫的","synonyms":"powdery, grimy, murky"},
+  "blot":{"phonetic":"/blɒt/","pos":"v.","en_def":"to cover or obscure completely","zh_def":"遮蔽，遮挡","synonyms":"obscure, block, obliterate"},
+  "sinister":{"phonetic":"/ˈsɪnɪstər/","pos":"adj.","en_def":"suggesting evil or danger","zh_def":"阴险的，不祥的","synonyms":"ominous, menacing, foreboding"},
+  "flickering":{"phonetic":"/ˈflɪkərɪŋ/","pos":"adj.","en_def":"shining unsteadily with a wavering light","zh_def":"闪烁的，忽明忽暗的","synonyms":"flashing, glimmering, wavering"},
+  "meteor":{"phonetic":"/ˈmiːtiər/","pos":"n.","en_def":"a small body of matter from outer space that enters Earth's atmosphere","zh_def":"流星","synonyms":"shooting star, fireball, bolide"},
+  "plunge":{"phonetic":"/plʌndʒ/","pos":"v.","en_def":"to move suddenly and rapidly downward","zh_def":"骤降，坠落","synonyms":"dive, drop, hurtle"},
+  "preceding":{"phonetic":"/prɪˈsiːdɪŋ/","pos":"adj.","en_def":"coming before in time or order","zh_def":"前面的，上述的","synonyms":"previous, foregoing, prior"},
+  "prediction":{"phonetic":"/prɪˈdɪkʃən/","pos":"n.","en_def":"a statement about what will happen in the future","zh_def":"预测，预言","synonyms":"forecast, projection, prophecy"},
+  "devastation":{"phonetic":"/ˌdevəˈsteɪʃən/","pos":"n.","en_def":"great destruction or damage","zh_def":"毁灭，严重破坏","synonyms":"destruction, ruin, annihilation"},
+  "pay a visit":{"phonetic":"/peɪ ə ˈvɪzɪt/","pos":"phr.","en_def":"to make a visit to","zh_def":"拜访，造访","synonyms":"come by, call on, stop by"},
+  "distinct":{"phonetic":"/dɪˈstɪŋkt/","pos":"adj.","en_def":"clearly noticeable; definite","zh_def":"明显的，确实的","synonyms":"clear, definite, unmistakable"},
+  "revise":{"phonetic":"/rɪˈvaɪz/","pos":"v.","en_def":"to change or correct after further consideration","zh_def":"修正，修订","synonyms":"update, amend, correct"},
+  "indicate":{"phonetic":"/ˈɪndɪkeɪt/","pos":"v.","en_def":"to show or suggest something","zh_def":"表明，显示","synonyms":"suggest, show, demonstrate"},
+  "close shave":{"phonetic":"/kləʊz ʃeɪv/","pos":"phr.","en_def":"a narrow escape from danger","zh_def":"侥幸脱险，千钧一发","synonyms":"narrow escape, near miss, close call"},
+  "interloper":{"phonetic":"/ˈɪntəloʊpər/","pos":"n.","en_def":"one who intrudes into a place where they are not wanted","zh_def":"闯入者，入侵者","synonyms":"intruder, trespasser, invader"},
+  "originate":{"phonetic":"/əˈrɪdʒɪneɪt/","pos":"v.","en_def":"to begin or arise from a particular place or source","zh_def":"起源，发源","synonyms":"arise, stem, derive"},
+  "frigid":{"phonetic":"/ˈfrɪdʒɪd/","pos":"adj.","en_def":"extremely cold","zh_def":"极寒的，严寒的","synonyms":"freezing, arctic, glacial"},
+  "traffic":{"phonetic":"/ˈtræfɪk/","pos":"n.","en_def":"the movement of objects through a particular area","zh_def":"运动，流动","synonyms":"flow, movement, transit"},
+  "lethal":{"phonetic":"/ˈliːθəl/","pos":"adj.","en_def":"capable of causing death","zh_def":"致命的","synonyms":"deadly, fatal, mortal"},
+  "constitute":{"phonetic":"/ˈkɒnstɪtjuːt/","pos":"v.","en_def":"to make up or form something","zh_def":"构成，组成","synonyms":"form, comprise, make up"},
+  "ever-present":{"phonetic":"/ˌevəˈprezənt/","pos":"adj.","en_def":"always existing or occurring","zh_def":"永远存在的，无处不在的","synonyms":"constant, omnipresent, persistent"},
+  "menace":{"phonetic":"/ˈmenəs/","pos":"n.","en_def":"a threat or danger","zh_def":"威胁，危险","synonyms":"threat, hazard, peril"},
+  "routine":{"phonetic":"/ruːˈtiːn/","pos":"adj.","en_def":"done as a regular and standard procedure; ordinary","zh_def":"常规的，平常的","synonyms":"ordinary, regular, commonplace"},
+  "cometary":{"phonetic":"/ˈkɒmɪtəri/","pos":"adj.","en_def":"relating to or resembling a comet","zh_def":"彗星的","synonyms":"asteroidal, celestial"},
+  "magnitude":{"phonetic":"/ˈmæɡnɪtjuːd/","pos":"n.","en_def":"the great size or extent of something","zh_def":"规模，量级","synonyms":"scale, size, extent"},
+  "extinction":{"phonetic":"/ɪkˈstɪŋkʃən/","pos":"n.","en_def":"the state of being destroyed or no longer existing","zh_def":"灭绝，消亡","synonyms":"annihilation, obliteration, dying out"},
+  "Revelation":{"phonetic":"/ˌrevəˈleɪʃən/","pos":"n.","en_def":"the last book of the Bible describing the end of the world","zh_def":"《启示录》","synonyms":"—"},
+  "rumbling":{"phonetic":"/ˈrʌmblɪŋ/","pos":"n.","en_def":"a deep, continuous sound like distant thunder","zh_def":"隆隆声，轰鸣声","synonyms":"roar, growl, thunder"},
+  "peal":{"phonetic":"/piːl/","pos":"n.","en_def":"a loud, prolonged sound of thunder or bells","zh_def":"轰鸣，洪亮声","synonyms":"crash, boom, clap"},
+  "severe":{"phonetic":"/sɪˈvɪər/","pos":"adj.","en_def":"very great; intense","zh_def":"严重的，剧烈的","synonyms":"intense, extreme, violent"},
+  "tremendous":{"phonetic":"/trɪˈmendəs/","pos":"adj.","en_def":"very great in amount, scale, or intensity","zh_def":"巨大的，猛烈的","synonyms":"enormous, immense, colossal"},
+  "hailstone":{"phonetic":"/ˈheɪlstəʊn/","pos":"n.","en_def":"a ball of ice that falls like rain","zh_def":"冰雹","synonyms":"ice pellet, frozen raindrop"},
+  "plague":{"phonetic":"/pleɪɡ/","pos":"n.","en_def":"a widespread affliction or calamity","zh_def":"灾难，祸患","synonyms":"calamity, scourge, affliction"},
+  "hail":{"phonetic":"/heɪl/","pos":"n.","en_def":"balls of ice falling from the sky during a storm","zh_def":"冰雹","synonyms":"ice pellet, sleet"},
+  "puny":{"phonetic":"/ˈpjuːni/","pos":"adj.","en_def":"small and weak","zh_def":"渺小的，微不足道的","synonyms":"tiny, insignificant, feeble"},
+  "pervade":{"phonetic":"/pəˈveɪd/","pos":"v.","en_def":"to spread through and be perceived throughout","zh_def":"弥漫，充斥","synonyms":"permeate, saturate, suffuse"},
+  "hospitable":{"phonetic":"/hɒˈspɪtəbəl/","pos":"adj.","en_def":"providing a favorable environment for life","zh_def":"适宜居住的，有利于生存的","synonyms":"favorable, welcoming, benign"},
+  "galactic":{"phonetic":"/ɡəˈlæktɪk/","pos":"adj.","en_def":"relating to a galaxy","zh_def":"银河系的，星系的","synonyms":"cosmic, stellar, interstellar"},
+  "bulge":{"phonetic":"/bʌldʒ/","pos":"n.","en_def":"a rounded swelling or projection","zh_def":"隆起，凸出部分","synonyms":"protrusion, swelling, hump"},
+  "string out":{"phonetic":"/strɪŋ aʊt/","pos":"phr.v.","en_def":"to spread out in a line","zh_def":"延伸排列，分散分布","synonyms":"spread out, extend, stretch"},
+  "Andromeda":{"phonetic":"/ænˈdrɒmɪdə/","pos":"n.","en_def":"the nearest large galaxy to the Milky Way","zh_def":"仙女座星系","synonyms":"—"},
+  "constellation":{"phonetic":"/ˌkɒnstəˈleɪʃən/","pos":"n.","en_def":"a group of stars forming a recognizable pattern","zh_def":"星座","synonyms":"star pattern, asterism"},
+  "unaided eye":{"phonetic":"/ʌnˈeɪdɪd aɪ/","pos":"phr.","en_def":"without any optical instruments such as a telescope","zh_def":"肉眼","synonyms":"naked eye, bare eye"},
+  "fuzzy":{"phonetic":"/ˈfʌzi/","pos":"adj.","en_def":"difficult to see clearly; blurred","zh_def":"模糊的，朦胧的","synonyms":"blurry, hazy, indistinct"},
+  "elliptical":{"phonetic":"/ɪˈlɪptɪkəl/","pos":"adj.","en_def":"having the shape of an ellipse; oval","zh_def":"椭圆形的","synonyms":"oval, oblong, egg-shaped"},
+  "adorn":{"phonetic":"/əˈdɔːrn/","pos":"v.","en_def":"to make more attractive; to decorate","zh_def":"点缀，装饰","synonyms":"decorate, embellish, grace"},
+  "pose":{"phonetic":"/pəʊz/","pos":"v.","en_def":"to present or constitute a problem or threat","zh_def":"构成，带来（威胁）","synonyms":"present, constitute, represent"},
+  "spectacular":{"phonetic":"/spekˈtækjələr/","pos":"adj.","en_def":"beautiful in a dramatic and eye-catching way","zh_def":"壮观的，引人注目的","synonyms":"magnificent, breathtaking, stunning"},
+  "nucleus":{"phonetic":"/ˈnjuːkliəs/","pos":"n.","en_def":"the central part of something","zh_def":"核心，核","synonyms":"core, center, heart"},
+  "retinue":{"phonetic":"/ˈretɪnjuː/","pos":"n.","en_def":"a group of things accompanying something important","zh_def":"随行队伍，伴随物","synonyms":"entourage, escort, following"},
+  "evaporate":{"phonetic":"/ɪˈvæpəreɪt/","pos":"v.","en_def":"to convert from liquid into vapor","zh_def":"蒸发，挥发","synonyms":"vaporize, dissipate, sublime"},
+  "volatile":{"phonetic":"/ˈvɒlətaɪl/","pos":"adj.","en_def":"easily evaporated at normal temperatures","zh_def":"易挥发的","synonyms":"unstable, evaporable, gaseous"},
+  "streamer":{"phonetic":"/ˈstriːmər/","pos":"n.","en_def":"a long, narrow flow of something","zh_def":"长条，流","synonyms":"trail, plume, ribbon"},
+  "sojourn":{"phonetic":"/ˈsɒdʒɜːrn/","pos":"n.","en_def":"a temporary stay in a place","zh_def":"短暂停留，逗留","synonyms":"stay, visit, stopover"},
+  "insulate":{"phonetic":"/ˈɪnsjuleɪt/","pos":"v.","en_def":"to protect from harmful external influences","zh_def":"隔绝，保护","synonyms":"protect, shield, isolate"},
+  "drift":{"phonetic":"/drɪft/","pos":"v.","en_def":"to move slowly and without direction","zh_def":"漂移，缓慢移动","synonyms":"float, wander, meander"},
+  "tenuous":{"phonetic":"/ˈtenjuəs/","pos":"adj.","en_def":"very thin or slight; not dense","zh_def":"稀薄的，稀疏的","synonyms":"thin, sparse, rarefied"},
+  "drastically":{"phonetic":"/ˈdræstɪkli/","pos":"adv.","en_def":"in a way that is severe or far-reaching","zh_def":"剧烈地，大幅度地","synonyms":"severely, radically, profoundly"},
+  "lurk":{"phonetic":"/lɜːrk/","pos":"v.","en_def":"to be present in a hidden or unsuspected way","zh_def":"潜伏，隐藏","synonyms":"hide, skulk, lie in wait"},
+  "inky":{"phonetic":"/ˈɪŋki/","pos":"adj.","en_def":"very dark; black as ink","zh_def":"漆黑的，墨黑的","synonyms":"pitch-black, dark, murky"},
+  "rogue":{"phonetic":"/rəʊɡ/","pos":"adj.","en_def":"behaving in an unpredictable or dangerous way","zh_def":"游荡的，失控的","synonyms":"errant, wayward, maverick"},
+  "havoc":{"phonetic":"/ˈhævək/","pos":"n.","en_def":"widespread destruction or disorder","zh_def":"严重破坏，大混乱","synonyms":"chaos, devastation, mayhem"}
+};
+
+const TOTAL = Object.keys(VOCAB).length;
+const knownState = {};
+
+try {
+  const saved = localStorage.getItem('tlm_ch1_known');
+  if (saved) Object.assign(knownState, JSON.parse(saved));
+} catch(e) {}
+
+function saveState() {
+  try { localStorage.setItem('tlm_ch1_known', JSON.stringify(knownState)); } catch(e) {}
+}
+
+function applyKnownStyles() {
+  document.querySelectorAll('.vocab').forEach(el => {
+    el.classList.toggle('known', !!knownState[el.dataset.word]);
+  });
+}
+
+function speak(word) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(word);
+    u.lang = 'en-US'; u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+let currentWord = null;
+
+function openCard(word) {
+  const data = VOCAB[word];
+  if (!data) return;
+  currentWord = word;
+  document.getElementById('card-word').textContent = word;
+  document.getElementById('card-phonetic').textContent = data.phonetic;
+  document.getElementById('card-pos').textContent = data.pos;
+  document.getElementById('card-en').textContent = data.en_def;
+  document.getElementById('card-zh').textContent = data.zh_def;
+  document.getElementById('card-synonyms').textContent = data.synonyms !== '—' ? '≈ ' + data.synonyms : '';
+  document.getElementById('btn-known').textContent = knownState[word] ? '✓ 已掌握（取消）' : '✓ 标为已掌握';
+  document.getElementById('overlay').classList.add('visible');
+  speak(word);
+}
+
+function closeCard() {
+  document.getElementById('overlay').classList.remove('visible');
+  currentWord = null;
+}
+
+document.querySelectorAll('.vocab').forEach(el => {
+  el.addEventListener('click', () => openCard(el.dataset.word));
+});
+
+document.getElementById('btn-known').addEventListener('click', () => {
+  if (!currentWord) return;
+  knownState[currentWord] = !knownState[currentWord];
+  saveState(); applyKnownStyles(); closeCard();
+});
+
+document.getElementById('btn-close').addEventListener('click', closeCard);
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeCard();
+});
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && document.getElementById('overlay').classList.contains('visible')) {
+    e.preventDefault(); closeCard();
+  }
+});
+
+applyKnownStyles();
+</script>
+</body>
+</html>

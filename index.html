@@ -221,7 +221,7 @@
     <div class="stat-label">在读书目</div>
   </div>
   <div class="stat">
-    <div class="stat-num">77</div>
+    <div class="stat-num">184</div>
     <div class="stat-label">累计词汇</div>
   </div>
   <div class="stat">
@@ -245,10 +245,10 @@
       </div>
       <div class="book-progress">
         <div class="progress-track">
-          <div class="progress-fill" style="width: 8%"></div>
+          <div class="progress-fill" style="width: 15%"></div>
         </div>
         <div class="progress-label">
-          <span>序言已完成 · 77词</span>
+          <span>Preface + Ch.1 · 184词</span>
           <span id="known-tlm">—</span>
         </div>
       </div>
@@ -263,7 +263,16 @@
             <a class="chapter-btn" href="001-the-last-three-minutes/001_Preface_Cards.html">🗂 Cards</a>
           </div>
         </li>
-        <!-- 以后每章在此添加一行，格式同上 -->
+        <li class="chapter-item">
+          <div class="chapter-info">
+            <div class="chapter-name"><span class="chapter-num">002</span>Chapter 1: Doomsday</div>
+            <div class="chapter-words">107 词</div>
+          </div>
+          <div class="chapter-btns">
+            <a class="chapter-btn primary" href="001-the-last-three-minutes/002_Ch01_Notes.html">📖 Notes</a>
+            <a class="chapter-btn" href="001-the-last-three-minutes/002_Ch01_Cards.html">🗂 Cards</a>
+          </div>
+        </li>
       </ul>
     </div>
 
@@ -294,10 +303,14 @@ function getKnownCount(key) {
   } catch(e) { return null; }
 }
 
-const knownTLM = getKnownCount('tlm_preface_known') ?? getKnownCount('tlm_cards_state');
-document.getElementById('known-tlm').textContent = knownTLM !== null ? `已掌握 ${knownTLM}` : '未开始';
+const knownPreface = getKnownCount('tlm_preface_known') ?? getKnownCount('tlm_cards_state');
+const knownCh1 = getKnownCount('tlm_ch1_known') ?? getKnownCount('tlm_ch1_cards_state');
 
-const totalKnown = [knownTLM].filter(n => n !== null).reduce((a, b) => a + b, 0);
+const knownTLM = (knownPreface ?? 0) + (knownCh1 ?? 0);
+const tlmStarted = knownPreface !== null || knownCh1 !== null;
+document.getElementById('known-tlm').textContent = tlmStarted ? `已掌握 ${knownTLM}` : '未开始';
+
+const totalKnown = tlmStarted ? knownTLM : 0;
 document.getElementById('total-known').textContent = totalKnown || '—';
 </script>
 </body>
