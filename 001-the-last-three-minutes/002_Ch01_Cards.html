@@ -256,6 +256,7 @@ const WORDS = [
   {"word":"destructive","phonetic":"/dɪˈstrʌktɪv/","pos":"adj.","en_def":"causing great damage or harm","zh_def":"破坏性的，毁灭性的","synonyms":"devastating, ruinous, catastrophic"},
   {"word":"staggering","phonetic":"/ˈstæɡərɪŋ/","pos":"adj.","en_def":"extremely shocking or surprising","zh_def":"惊人的，令人震惊的","synonyms":"astonishing, astounding, overwhelming"},
   {"word":"destine","phonetic":"/ˈdestɪn/","pos":"v.","en_def":"to be certain to happen in the future","zh_def":"注定，命中注定","synonyms":"doom, ordain, predetermine"},
+  {"word":"inevitable","phonetic":"/ɪnˈevɪtəbəl/","pos":"adj.","en_def":"certain to happen; impossible to avoid","zh_def":"不可避免的，必然的","synonyms":"unavoidable, inescapable, certain"},
   {"word":"elaborate","phonetic":"/ɪˈlæbərət/","pos":"adj.","en_def":"involving many carefully arranged parts; detailed and complicated","zh_def":"精心设计的，复杂的","synonyms":"complex, intricate, detailed"},
   {"word":"cataclysm","phonetic":"/ˈkætəklɪzəm/","pos":"n.","en_def":"a sudden violent event that causes great destruction","zh_def":"大灾难，剧变","synonyms":"catastrophe, disaster, calamity"},
   {"word":"posterity","phonetic":"/pɒˈsterɪti/","pos":"n.","en_def":"future generations of people","zh_def":"后代，子孙后代","synonyms":"descendants, future generations, offspring"},
@@ -337,7 +338,36 @@ const WORDS = [
   {"word":"lurk","phonetic":"/lɜːrk/","pos":"v.","en_def":"to be present in a hidden or unsuspected way","zh_def":"潜伏，隐藏","synonyms":"hide, skulk, lie in wait"},
   {"word":"inky","phonetic":"/ˈɪŋki/","pos":"adj.","en_def":"very dark; black as ink","zh_def":"漆黑的，墨黑的","synonyms":"pitch-black, dark, murky"},
   {"word":"rogue","phonetic":"/rəʊɡ/","pos":"adj.","en_def":"behaving in an unpredictable or dangerous way","zh_def":"游荡的，失控的","synonyms":"errant, wayward, maverick"},
-  {"word":"havoc","phonetic":"/ˈhævək/","pos":"n.","en_def":"widespread destruction or disorder","zh_def":"严重破坏，大混乱","synonyms":"chaos, devastation, mayhem"}
+  {"word":"havoc","phonetic":"/ˈhævək/","pos":"n.","en_def":"widespread destruction or disorder","zh_def":"严重破坏，大混乱","synonyms":"chaos, devastation, mayhem"},
+  {"word":"insidious","phonetic":"/ɪnˈsɪdiəs/","pos":"adj.","en_def":"proceeding in a gradual and harmful way that is not immediately obvious","zh_def":"潜伏的，隐患的","synonyms":"subtle, stealthy, treacherous"},
+  {"word":"in common with","phonetic":"/ɪn ˈkɒmən wɪð/","pos":"phr.","en_def":"sharing a characteristic with others","zh_def":"与……相同，和……一样","synonyms":"like, similarly to, along with"},
+  {"word":"dub","phonetic":"/dʌb/","pos":"v.","en_def":"to give an informal name or nickname to something","zh_def":"给……起绰号，称为","synonyms":"nickname, call, label"},
+  {"word":"Nemesis","phonetic":"/ˈnemɪsɪs/","pos":"n.","en_def":"a long-standing rival or source of harm; here, a hypothetical companion star","zh_def":"克星，宿敌（此处指假想的伴星）","synonyms":"—"},
+  {"word":"Earthward","phonetic":"/ˈɜːrθwərd/","pos":"adv.","en_def":"in the direction of Earth","zh_def":"朝向地球","synonyms":"toward Earth, groundward"},
+  {"word":"devastating","phonetic":"/ˈdevəsteɪtɪŋ/","pos":"adj.","en_def":"causing severe damage or destruction","zh_def":"毁灭性的，极具破坏力的","synonyms":"destructive, catastrophic, ruinous"},
+  {"word":"wholesale","phonetic":"/ˈhoʊlseɪl/","pos":"adj.","en_def":"done on a large scale; affecting a large number","zh_def":"大规模的，全面的","synonyms":"large-scale, sweeping, widespread"},
+  {"word":"ecological","phonetic":"/ˌiːkəˈlɒdʒɪkəl/","pos":"adj.","en_def":"relating to the relationship between living organisms and their environment","zh_def":"生态的，生态学的","synonyms":"environmental, biological, natural"},
+  {"word":"afield","phonetic":"/əˈfiːld/","pos":"adv.","en_def":"to or at a distance; far away","zh_def":"在远处，往更远处","synonyms":"far away, further, beyond"},
+  {"word":"smash","phonetic":"/smæʃ/","pos":"v.","en_def":"to break or destroy violently","zh_def":"猛烈撞击，摧毁","synonyms":"shatter, collide, crash"},
+  {"word":"disrupt","phonetic":"/dɪsˈrʌpt/","pos":"v.","en_def":"to disturb or interrupt the normal course of something","zh_def":"扰乱，破坏","synonyms":"disturb, upset, destabilize"},
+  {"word":"spell","phonetic":"/spel/","pos":"v.","en_def":"to lead to or result in something, usually bad","zh_def":"意味着，招致","synonyms":"mean, signal, portend"},
+  {"word":"constituent","phonetic":"/kənˈstɪtjuənt/","pos":"adj.","en_def":"being a part of a whole","zh_def":"组成的，构成的","synonyms":"component, elemental, integral"},
+  {"word":"sparsely","phonetic":"/ˈspɑːrsli/","pos":"adv.","en_def":"in small numbers or amounts over a large area","zh_def":"稀疏地，零散地","synonyms":"thinly, scantily, diffusely"},
+  {"word":"stellar","phonetic":"/ˈstelər/","pos":"adj.","en_def":"relating to stars","zh_def":"恒星的，星际的","synonyms":"astral, star-related, cosmic"},
+  {"word":"prospect","phonetic":"/ˈprɒspekt/","pos":"n.","en_def":"the possibility or likelihood of something happening","zh_def":"前景，可能性","synonyms":"possibility, likelihood, outlook"},
+  {"word":"Doomsday","phonetic":"/ˈduːmzdeɪ/","pos":"n.","en_def":"the end of the world; a time of catastrophic destruction","zh_def":"末日，世界末日","synonyms":"apocalypse, end of days, Armageddon"},
+  {"word":"degradation","phonetic":"/ˌdeɡrəˈdeɪʃən/","pos":"n.","en_def":"the process of something declining in quality or condition","zh_def":"退化，恶化","synonyms":"deterioration, decline, decay"},
+  {"word":"variation","phonetic":"/ˌveəriˈeɪʃən/","pos":"n.","en_def":"a change or difference in condition or level","zh_def":"变化，变动","synonyms":"change, fluctuation, deviation"},
+  {"word":"fragile","phonetic":"/ˈfrædʒaɪl/","pos":"adj.","en_def":"easily damaged or destroyed; delicate","zh_def":"脆弱的，易损的","synonyms":"delicate, vulnerable, brittle"},
+  {"word":"gradual","phonetic":"/ˈɡrædʒuəl/","pos":"adj.","en_def":"taking place slowly over a long period of time","zh_def":"逐渐的，缓慢的","synonyms":"slow, incremental, progressive"},
+  {"word":"onset","phonetic":"/ˈɒnset/","pos":"n.","en_def":"the beginning of something, especially something unpleasant","zh_def":"开始，发端","synonyms":"start, beginning, commencement"},
+  {"word":"millennia","phonetic":"/mɪˈleniə/","pos":"n.","en_def":"periods of one thousand years","zh_def":"千年，千年期","synonyms":"ages, epochs, eons"},
+  {"word":"tempting","phonetic":"/ˈtemptiŋ/","pos":"adj.","en_def":"appealing and making one want to do or believe something","zh_def":"诱人的，令人心动的","synonyms":"appealing, enticing, alluring"},
+  {"word":"avert","phonetic":"/əˈvɜːrt/","pos":"v.","en_def":"to prevent something bad from happening","zh_def":"避免，防止","synonyms":"prevent, ward off, forestall"},
+  {"word":"immortality","phonetic":"/ˌɪmɔːˈtælɪti/","pos":"n.","en_def":"the ability to live forever; endless existence","zh_def":"不朽，永生","synonyms":"eternal life, undying existence, everlasting life"},
+  {"word":"impose","phonetic":"/ɪmˈpəʊz/","pos":"v.","en_def":"to force something to be accepted or put in place","zh_def":"强加，施加","synonyms":"enforce, inflict, dictate"},
+  {"word":"entangle","phonetic":"/ɪnˈtæŋɡəl/","pos":"v.","en_def":"to cause to become caught up or involved with something","zh_def":"纠缠，卷入","synonyms":"entwine, interweave, involve"},
+  {"word":"inextricably","phonetic":"/ˌɪnˈekstrɪkəbli/","pos":"adv.","en_def":"in a way that is impossible to separate or escape from","zh_def":"不可分割地，密不可分地","synonyms":"inseparably, irreversibly, indissolubly"}
 ];
 
 const state = {};
@@ -414,7 +444,7 @@ function openModal(w) {
   document.getElementById('modal-pos').textContent = w.pos;
   document.getElementById('modal-en').textContent = w.en_def;
   document.getElementById('modal-zh').textContent = w.zh_def;
-  document.getElementById('modal-synonyms').textContent = w.synonyms !== '—' ? '≈ ' + w.synonyms : '';
+  document.getElementById('modal-synonyms').textContent = w.synonyms && w.synonyms !== '—' ? '≈ ' + w.synonyms : '';
   const s = state[w.word];
   document.getElementById('btn-known').textContent = s === 'known' ? '✓ 已掌握（取消）' : '✓ 已掌握';
   document.getElementById('btn-unknown').textContent = s === 'unknown' ? '✗ 待复习（取消）' : '✗ 待复习';
